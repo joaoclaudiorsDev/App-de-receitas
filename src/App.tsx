@@ -6,6 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Layout } from './components/Layout';
 import Meals from './pages/Meals';
 import Drinks from './pages/Drinks';
+import Footer from './components/Footer';
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
         <Route path="/meals/:id-da-receita/in-progress" element={ <h1>...</h1> } />
         <Route path="/drinks/:id-da-receita/in-progress" element={ <h1>...</h1> } />
       </Routes>
+      <Footer />
     </>
   );
 }
