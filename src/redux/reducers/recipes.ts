@@ -6,7 +6,7 @@ const INITIAL_STATE = {
   mealRecipes: [],
 };
 
-export function recipes(state = INITIAL_STATE, action: AnyAction) {
+function recipes(state = INITIAL_STATE, action: AnyAction) {
   switch (action.type) {
     case SAVE_DRINK_RECIPES:
       return {
