@@ -7,6 +7,7 @@ import { Layout } from './components/Layout';
 import Meals from './pages/Meals';
 import Drinks from './pages/Drinks';
 import Footer from './components/Footer';
+import Login from './pages/Login';
 
 function App() {
   return (
@@ -22,7 +23,7 @@ function App() {
         </object>
       </div>
       <Routes>
-        <Route path="/" element={ <h1>...</h1> } />
+        <Route path="/" element={ <Login /> } />
         <Route path="" element={ <Layout /> }>
           <Route path="/meals" element={ <Meals /> } />
           <Route path="/drinks" element={ <Drinks /> } />
