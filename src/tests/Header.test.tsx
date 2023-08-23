@@ -1,11 +1,11 @@
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from '../App';
-import { renderWithRouter } from './helpers/RenderWith';
+import { renderWithRouterAndRedux } from './helpers/RenderWith';
 
 describe('testing Header component', () => {
   test('testing Header with /meals', async () => {
-    renderWithRouter(<App />, { initialEntries: ['/meals'] });
+    renderWithRouterAndRedux(<App />, { initialEntries: ['/meals'] });
 
     const mealsTitle = screen.getByRole('heading', { name: /meals/i });
     const profileBtn = screen.getByRole('button', { name: /profile-icon/i });
@@ -32,7 +32,7 @@ describe('testing Header component', () => {
     expect(profileTitle).toBeInTheDocument();
   });
   test('testing Header with /drinks', async () => {
-    renderWithRouter(<App />, { initialEntries: ['/drinks'] });
+    renderWithRouterAndRedux(<App />, { initialEntries: ['/drinks'] });
 
     const drinksTitle = screen.getByRole('heading', { name: /drinks/i });
     const profileBtn = screen.getByRole('button', { name: /profile-icon/i });
@@ -59,7 +59,7 @@ describe('testing Header component', () => {
     expect(profileTitle).toBeInTheDocument();
   });
   test('testing Header with /profile', async () => {
-    renderWithRouter(<App />, { initialEntries: ['/profile'] });
+    renderWithRouterAndRedux(<App />, { initialEntries: ['/profile'] });
 
     const profileTitle = screen.getByRole('heading', { name: /profile/i });
     const profileBtn = screen.getByRole('button', { name: /profile-icon/i });
@@ -72,7 +72,7 @@ describe('testing Header component', () => {
     expect(profileTitle).toBeInTheDocument();
   });
   test('testing Header with /done-recipes', async () => {
-    renderWithRouter(<App />, { initialEntries: ['/done-recipes'] });
+    renderWithRouterAndRedux(<App />, { initialEntries: ['/done-recipes'] });
 
     const doneRecipesTitle = screen.getByRole('heading', { name: /done recipes/i });
     const profileBtn = screen.getByRole('button', { name: /profile-icon/i });
@@ -87,7 +87,7 @@ describe('testing Header component', () => {
     expect(profileTitle).toBeInTheDocument();
   });
   test('testing Header with /favorite-recipes', async () => {
-    renderWithRouter(<App />, { initialEntries: ['/favorite-recipes'] });
+    renderWithRouterAndRedux(<App />, { initialEntries: ['/favorite-recipes'] });
 
     const favoriteRecipesTitle = screen.getByRole('heading', { name: /favorite recipes/i });
     const profileBtn = screen.getByRole('button', { name: /profile-icon/i });
