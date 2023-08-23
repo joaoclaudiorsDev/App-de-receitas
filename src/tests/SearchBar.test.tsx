@@ -7,6 +7,10 @@ import { mealsMock, mealByName } from './mocks/Meals';
 import { drinksMock, drinkByName } from './mocks/Drinks';
 
 describe('Testing SearchBar errors on Meals page', () => {
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
+
   test('Check if SearchBar throw error if has wrong recipe.', async () => {
     renderWithRouterAndRedux(<App />, { initialEntries: ['/meals'] });
 
@@ -53,6 +57,10 @@ describe('Testing SearchBar errors on Meals page', () => {
 });
 
 describe('Testing SearchBar errors on Drinks page', () => {
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
+
   test('Check if SearchBar throw error if has wrong recipe.', async () => {
     renderWithRouterAndRedux(<App />, { initialEntries: ['/drinks'] });
 
@@ -99,6 +107,10 @@ describe('Testing SearchBar errors on Drinks page', () => {
 });
 
 describe('Testing SearchBar component on Meals page', () => {
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
+
   test('Check if SearchBar appears when clicked.', async () => {
     renderWithRouterAndRedux(<App />, { initialEntries: ['/meals'] });
 
@@ -125,6 +137,10 @@ describe('Testing SearchBar component on Meals page', () => {
 
   test('Check if SearchBar search ingredients correctly when submit.', async () => {
     renderWithRouterAndRedux(<App />, { initialEntries: ['/meals'] });
+
+    global.fetch = vi.fn().mockResolvedValue({
+      json: async () => (mealsMock),
+    });
 
     const searchBtn = screen.getByRole('button', { name: /search-icon/i });
 
@@ -170,6 +186,10 @@ describe('Testing SearchBar component on Meals page', () => {
   test('Check if SearchBar search food correctly if only have one letter when submit.', async () => {
     renderWithRouterAndRedux(<App />, { initialEntries: ['/meals'] });
 
+    global.fetch = vi.fn().mockResolvedValue({
+      json: async () => (mealsMock),
+    });
+
     const searchBtn = screen.getByRole('button', { name: /search-icon/i });
 
     await userEvent.click(searchBtn);
@@ -189,6 +209,10 @@ describe('Testing SearchBar component on Meals page', () => {
 });
 
 describe('Testing SearchBar component on Drinks page', () => {
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
+
   test('Check if SearchBar appears when clicked.', async () => {
     renderWithRouterAndRedux(<App />, { initialEntries: ['/drinks'] });
 
@@ -235,6 +259,10 @@ describe('Testing SearchBar component on Drinks page', () => {
 
   test('Check if SearchBar search ingredients correctly when submit.', async () => {
     renderWithRouterAndRedux(<App />, { initialEntries: ['/drinks'] });
+
+    global.fetch = vi.fn().mockResolvedValue({
+      json: async () => (drinksMock),
+    });
 
     const searchBtn = screen.getByRole('button', { name: /search-icon/i });
 
