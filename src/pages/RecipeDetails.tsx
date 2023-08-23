@@ -1,40 +1,73 @@
 import { useEffect, useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { fetchDrinkId, fetchMealId } from '../utils/fetchAPI';
 import RecommendationCard from '../components/RecommendationCard/RecommendationCard';
-import { DrinkType, MealType } from '../types';
+import { DoneRecipesType, DrinkType, MealType } from '../types';
 
 function RecipeDetails() {
+  const navigate = useNavigate();
   const { id } = useParams<string>();
   const { pathname } = useLocation();
   const [mealRecipe, setMealRecipe] = useState<MealType>();
   const [drinkRecipe, setDrinkRecipe] = useState<DrinkType>();
   const [ingredients, setIngredients] = useState<string[]>();
+  const doneRecipesLocal: DoneRecipesType = [{
+    id: '178319',
+    type: 'drink',
+    nationality: '',
+    category: 'Cocktail',
+    alcoholicOrNot: 'Alcoholic',
+    name: 'Aquamarine',
+    image: 'https://www.thecocktaildb.com/images/media/drink/zvsre31572902738.jpg',
+    doneDate: '23/6/2020',
+    tags: [],
+  },
+  {
+    id: '52771',
+    type: 'meal',
+    nationality: 'Italian',
+    category: 'Vegetarian',
+    alcoholicOrNot: '',
+    name: 'Spicy Arrabiata Penne',
+    image: 'https://www.themealdb.com/images/media/meals/ustsqw1468250014.jpg',
+    doneDate: '22/6/2020',
+    tags: ['Pasta', 'Curry'],
+  }];
+  localStorage.setItem('doneRecipes', JSON.stringify(doneRecipesLocal));
   const doneRecipes = JSON.parse(localStorage.getItem('doneRecipes') || '[]');
+  const recipesInProgress = {
+    meals: {
+      52771: [],
+    },
+    drinks: {
+      178319: [],
+    },
+  };
+  localStorage.setItem('inProgressRecipes', JSON.stringify(recipesInProgress));
   const inProgressRecipes = JSON.parse(localStorage.getItem('inProgressRecipes') || '[]');
-  const recipeType = pathname.includes('meals') ? 'meals' : 'drinks';
 
   const fetchRecipe = async () => {
     if (pathname.includes('meals')) {
       const recipeData = await fetchMealId(id as string);
       setMealRecipe(recipeData);
-      const ingredientsList = Object.values(recipeData).slice(9, 29)
-        .filter((ingredient) => (
-          ingredient !== '' && ingredient !== null
-        ));
+      const ingredientsList = Object.entries(recipeData)
+        .filter((ingredient) => (ingredient[0]
+          .includes('Ingredient') && ingredient[1] !== '' && ingredient[1] !== null
+        )).map((ingredient) => ingredient[1]);
       setIngredients(ingredientsList as string[]);
     } else {
       const recipeData = await fetchDrinkId(id as string);
       setDrinkRecipe(recipeData);
-      const ingredientsList = Object.values(recipeData).slice(17, 31)
-        .filter((ingredient) => (
-          ingredient !== '' && ingredient !== null
-        ));
+      const ingredientsList = Object.entries(recipeData)
+        .filter((ingredient) => (ingredient[0]
+          .includes('Ingredient') && ingredient[1] !== '' && ingredient[1] !== null
+        )).map((ingredient) => ingredient[1]);
       setIngredients(ingredientsList as string[]);
     }
   };
   useEffect(() => {
     fetchRecipe();
+    console.log(pathname);
   }, [id]);
 
   return (
@@ -91,11 +124,42 @@ function RecipeDetails() {
         </div>
       )}
       <h2>Recommended</h2>
-      <RecommendationCard recipeCategory={ recipeType } />
-      {doneRecipes.some((recipe: { id: string; }) => recipe.id !== id) && (
-        <button data-testid="start-recipe-btn">Start Recipe</button>)}
-      {inProgressRecipes.some((recipe: { id: string; }) => recipe.id === id) && (
-        <button data-testid="start-recipe-btn">In Progress</button>)}
+      <RecommendationCard />
+      <div style={ { position: 'fixed', bottom: '0' } }>
+        {/* <button
+          data-testid="start-recipe-btn"
+          style={ { position: 'fixed', bottom: '0' } }
+          onClick={ () => navigate(`${pathname}/in-progress`) }
+        >
+          Start Recipe
+        </button> */}
+        {!doneRecipes.some((recipe: { id: string; }) => recipe.id === id) && (
+          <button
+            data-testid="start-recipe-btn"
+            style={ { position: 'fixed', bottom: '0' } }
+            onClick={ () => navigate(`${pathname}/in-progress`) }
+          >
+            Start Recipe
+          </button>)}
+      </div>
+      <div style={ { position: 'fixed', bottom: '0' } }>
+        {/* <button
+          data-testid="start-recipe-btn"
+          onClick={ () => navigate(`${pathname}/in-progress`) }
+        >
+          Continue Recipe
+        </button> */}
+        {/* {(pathname.includes('meals')
+          ? inProgressRecipes.meals[pathname.id]
+          : inProgressRecipes.drinks[pathname.id]) && (
+            <button
+              style={ { position: 'fixed', bottom: '0' } }
+              data-testid="start-recipe-btn"
+              onClick={ () => navigate(`${pathname}/in-progress`) }
+            >
+              Continue Recipe
+            </button>)} */}
+      </div>
     </>
   );
 }

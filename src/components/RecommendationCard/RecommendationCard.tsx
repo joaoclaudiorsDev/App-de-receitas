@@ -1,19 +1,21 @@
 import { motion } from 'framer-motion';
 import { useEffect, useState, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 import { fetchDrinksRecommendation,
   fetchMealsRecommendation } from '../../utils/fetchAPI';
 import { RecommendationType } from '../../types';
 import './RecommendationCard.css';
 
-function RecommendationCard(recipeCategory: string) {
+function RecommendationCard() {
   const carouselRef = useRef<HTMLDivElement>(null);
+  const { pathname } = useLocation();
   const [recommendations, setRecommendations] = useState<RecommendationType[]>([]);
 
   const fetchRecommendations = async () => {
     const MAX_RECOMMENDATIONS = 6;
     const MIN_RECOMMENDATIONS = 0;
-    const recipes = recipeCategory === 'meals'
-      ? await fetchMealsRecommendation() : await fetchDrinksRecommendation();
+    const recipes = pathname.includes('meals')
+      ? await fetchDrinksRecommendation() : await fetchMealsRecommendation();
     const recommendationsData = recipes.slice(MIN_RECOMMENDATIONS, MAX_RECOMMENDATIONS);
     setRecommendations(recommendationsData);
   };
@@ -29,23 +31,24 @@ function RecommendationCard(recipeCategory: string) {
           className="inner"
           drag="x"
           dragConstraints={ { right: 600, left: -600 } }
+          initial={ { x: 600 } }
         >
           {recommendations.map((recommendation, index) => (
             <motion.div
               className="item"
-              key={ recipeCategory === 'meals'
-                ? recommendation.idMeal : recommendation.idDrink }
+              key={ pathname.includes('meals')
+                ? recommendation.idDrink : recommendation.idMeal }
               data-testid={ `${index}-recommendation-card` }
             >
               <img
-                src={ recipeCategory === 'meals'
-                  ? recommendation.strMealThumb : recommendation.strDrinkThumb }
-                alt={ recipeCategory === 'meals'
-                  ? recommendation.strMeal : recommendation.strDrink }
+                src={ pathname.includes('meals')
+                  ? recommendation.strDrinkThumb : recommendation.strMealThumb }
+                alt={ pathname.includes('meals')
+                  ? recommendation.strDrink : recommendation.strMeal }
               />
               <p data-testid={ `${index}-recommendation-title` }>
-                { recipeCategory === 'meals'
-                  ? recommendation.strMeal : recommendation.strDrink }
+                { pathname.includes('meals')
+                  ? recommendation.strDrink : recommendation.strMeal }
               </p>
             </motion.div>
           ))}
