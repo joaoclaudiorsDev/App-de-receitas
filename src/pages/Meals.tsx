@@ -1,18 +1,21 @@
-import { MealType } from '../types';
+import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { ReduxState } from '../types';
 
-type MealsProps = {
-  meal: MealType,
-  index: number;
-};
-
-function Meals({ meal, index }: MealsProps) {
+function Meals() {
+  const { id } = useParams();
+  const { meals } = useSelector((state: ReduxState) => state.recipes);
+  const currMeal = meals.find((meal) => meal.idMeal === id);
   return (
-    <div key={ meal.idMeal } data-testid={ `${index}-recipe-card` }>
-      <h3 data-testid={ `${index}-card-name` }>{ meal.strMeal }</h3>
+    <div
+      key={ currMeal?.idMeal }
+      data-testid={ `${currMeal}-recipe-card` }
+    >
+      <h3 data-testid={ `${currMeal}-card-name` }>{ currMeal?.strMeal }</h3>
       <img
-        src={ meal.strMealThumb }
-        alt={ meal.strMeal }
-        data-testid={ `${index}-card-img` }
+        src={ currMeal?.strMealThumb }
+        alt={ currMeal?.strMeal }
+        data-testid={ `${currMeal}-card-img` }
       />
     </div>
   );

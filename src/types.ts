@@ -1,3 +1,6 @@
+import { AnyAction } from 'redux';
+import { ThunkDispatch } from 'redux-thunk';
+
 export type MealType = {
   idMeal: string;
   strMeal: string,
@@ -121,3 +124,20 @@ export type RecipesCategoriesType = {
   drinks: CategoryType[],
   meals: CategoryType[],
 };
+
+export type UserType = {
+  email: string,
+};
+
+export type RecipesTypeRedux = {
+  meals: MealType[],
+  drinks: DrinksType[],
+  categories: CategoryType[],
+};
+
+export type ReduxState = {
+  user: UserType,
+  recipes: RecipesTypeRedux,
+};
+
+export type Dispatch = ThunkDispatch<ReduxState, null, AnyAction>;
