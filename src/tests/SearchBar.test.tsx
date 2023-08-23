@@ -3,8 +3,8 @@ import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
 import App from '../App';
 import { renderWithRouterAndRedux } from './helpers/RenderWith';
-import { mealsMock, mealByName } from './mocks/Meals';
 import { drinksMock, drinkByName } from './mocks/Drinks';
+import { mealsMock, mealByName } from './mocks/Meals';
 
 describe('Testing SearchBar errors on Meals page', () => {
   afterEach(() => {
