@@ -1,27 +1,18 @@
 import React from 'react';
 import './App.css';
 import { Route, Routes } from 'react-router-dom';
-import rockGlass from './images/rockGlass.svg';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Layout } from './components/Layout';
 import Meals from './pages/Meals';
 import Drinks from './pages/Drinks';
+import Drink from './pages/Drink';
+import Meal from './pages/Meal';
 import Footer from './components/Footer';
 import Login from './pages/Login';
 
 function App() {
   return (
     <>
-      <div className="meals">
-        <span className="logo">TRYBE</span>
-        <object
-          className="rocksGlass"
-          type="image/svg+xml"
-          data={ rockGlass }
-        >
-          Glass
-        </object>
-      </div>
       <Routes>
         <Route path="/" element={ <Login /> } />
         <Route path="" element={ <Layout /> }>
@@ -31,8 +22,8 @@ function App() {
           <Route path="/done-recipes" element={ <h1>...</h1> } />
           <Route path="/favorite-recipes" element={ <h1>...</h1> } />
         </Route>
-        <Route path="/meals/:id-da-receita" element={ <h1>...</h1> } />
-        <Route path="/drinks/:id-da-receita" element={ <h1>...</h1> } />
+        <Route path="/meals/:id" element={ <Meal /> } />
+        <Route path="/drinks/:id" element={ <Drink /> } />
         <Route path="/meals/:id-da-receita/in-progress" element={ <h1>...</h1> } />
         <Route path="/drinks/:id-da-receita/in-progress" element={ <h1>...</h1> } />
       </Routes>
