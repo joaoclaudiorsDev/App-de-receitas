@@ -6,6 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Layout } from './components/Layout';
 import Meals from './pages/Meals';
 import Drinks from './pages/Drinks';
+import RecipeDetails from './pages/RecipeDetails';
 
 function App() {
   return (
@@ -29,8 +30,8 @@ function App() {
           <Route path="/done-recipes" element={ <h1>...</h1> } />
           <Route path="/favorite-recipes" element={ <h1>...</h1> } />
         </Route>
-        <Route path="/meals/:id-da-receita" element={ <h1>...</h1> } />
-        <Route path="/drinks/:id-da-receita" element={ <h1>...</h1> } />
+        <Route path="/meals/:id" element={ <RecipeDetails /> } />
+        <Route path="/drinks/:id" element={ <RecipeDetails /> } />
         <Route path="/meals/:id-da-receita/in-progress" element={ <h1>...</h1> } />
         <Route path="/drinks/:id-da-receita/in-progress" element={ <h1>...</h1> } />
       </Routes>
