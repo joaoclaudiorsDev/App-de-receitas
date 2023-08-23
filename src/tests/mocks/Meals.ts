@@ -8,6 +8,10 @@ export const mealByName = {
   ],
 };
 
+export const noMeals = {
+  meals: null,
+};
+
 export const mealsMock = {
   meals: [
     {

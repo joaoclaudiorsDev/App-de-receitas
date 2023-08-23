@@ -8,6 +8,10 @@ export const drinkByName = {
   ],
 };
 
+export const noDrink = {
+  drinks: null,
+};
+
 export const drinksMock = {
   drinks: [
     {
