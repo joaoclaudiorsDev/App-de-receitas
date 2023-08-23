@@ -1,10 +1,10 @@
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { ReduxState } from '../types';
+import { ReduxStateTemp } from '../types';
 
 function Meals() {
   const { id } = useParams();
-  const { meals } = useSelector((state: ReduxState) => state.recipes);
+  const { meals } = useSelector((state: ReduxStateTemp) => state.recipes);
   const currMeal = meals.find((meal) => meal.idMeal === id);
   return (
     <div

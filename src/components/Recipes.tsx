@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { Dispatch, ReduxState } from '../types';
+import { Dispatch, ReduxStateTemp } from '../types';
 import { fetchCategoriesAPI, fetchRecipesAPI } from '../redux/actions';
 import {
   DRINKS_API_URL,
@@ -17,7 +17,7 @@ function Recipes() {
   const [filterButtonController, setFilterButtonController] = useState(true);
   const dispatch: Dispatch = useDispatch();
   const { categories, drinks, meals } = useSelector(
-    (state: ReduxState) => state.recipes,
+    (state: ReduxStateTemp) => state.recipes,
   );
 
   const handleBtnAll = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {

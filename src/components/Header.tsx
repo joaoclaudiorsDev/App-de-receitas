@@ -2,6 +2,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import profileIcon from '../images/profileIcon.svg';
 import searchIcon from '../images/searchIcon.svg';
+import SearchBar from './SearchBar';
 
 function Header() {
   const { pathname } = useLocation();
@@ -20,7 +21,7 @@ function Header() {
             <img src={ searchIcon } alt="search-icon" data-testid="search-top-btn" />
           </button>
           {showSearchBar && (
-            <input type="text" data-testid="search-input" />
+            <SearchBar />
           )}
         </div>
       )}
@@ -34,7 +35,7 @@ function Header() {
             <img src={ searchIcon } alt="search-icon" data-testid="search-top-btn" />
           </button>
           {showSearchBar && (
-            <input type="text" data-testid="search-input" />
+            <SearchBar />
           )}
         </div>
       )}
