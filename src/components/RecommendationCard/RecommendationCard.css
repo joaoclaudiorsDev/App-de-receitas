@@ -1,17 +1,27 @@
 .card{
-  width: 100%;
-  max-width: 600px;
+  width: 600px;
   margin: 0 auto;
-  min-height: 100vh;
+  height: 390px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  overflow: hidden;
 }
 
 .inner{
   display: flex;
 }
 
+.item{
+  height: 300px;
+  width: 300px;
+}
+
+.item img{
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
 .carousel{
-  overflow: hidden;
+  cursor: grab;
 }

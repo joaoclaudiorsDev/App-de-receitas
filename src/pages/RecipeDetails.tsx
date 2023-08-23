@@ -1,116 +1,22 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
-
-type MealType = {
-  strMealThumb: string;
-  strMeal: string;
-  strCategory: string;
-  strInstructions: string;
-  strYoutube: string;
-  strIngredient1: string;
-  strIngredient2: string;
-  strIngredient3: string;
-  strIngredient4: string;
-  strIngredient5: string;
-  strIngredient6: string;
-  strIngredient7: string;
-  strIngredient8: string;
-  strIngredient9: string;
-  strIngredient10: string;
-  strIngredient11: string;
-  strIngredient12: string;
-  strIngredient13: string;
-  strIngredient14: string;
-  strIngredient15: string;
-  strIngredient16: string;
-  strIngredient17: string;
-  strIngredient18: string;
-  strIngredient19: string;
-  strIngredient20: string;
-  strMeasure1: string;
-  strMeasure2: string;
-  strMeasure3: string;
-  strMeasure4: string;
-  strMeasure5: string;
-  strMeasure6: string;
-  strMeasure7: string;
-  strMeasure8: string;
-  strMeasure9: string;
-  strMeasure10: string;
-  strMeasure11: string;
-  strMeasure12: string;
-  strMeasure13: string;
-  strMeasure14: string;
-  strMeasure15: string;
-  strMeasure16: string;
-  strMeasure17: string;
-  strMeasure18: string;
-  strMeasure19: string;
-  strMeasure20: string;
-};
-
-type DrinkType = {
-  strDrinkThumb: string;
-  strDrink: string;
-  strAlcoholic: string;
-  strInstructions: string;
-  strIngredient1: string;
-  strIngredient2: string;
-  strIngredient3: string;
-  strIngredient4: string;
-  strIngredient5: string;
-  strIngredient6: string;
-  strIngredient7: string;
-  strIngredient8: string;
-  strIngredient9: string;
-  strIngredient10: string;
-  strIngredient11: string;
-  strIngredient12: string;
-  strIngredient13: string;
-  strIngredient14: string;
-  strIngredient15: string;
-  strIngredient16: string;
-  strIngredient17: string;
-  strIngredient18: string;
-  strIngredient19: string;
-  strIngredient20: string;
-  strMeasure1: string;
-  strMeasure2: string;
-  strMeasure3: string;
-  strMeasure4: string;
-  strMeasure5: string;
-  strMeasure6: string;
-  strMeasure7: string;
-  strMeasure8: string;
-  strMeasure9: string;
-  strMeasure10: string;
-  strMeasure11: string;
-  strMeasure12: string;
-  strMeasure13: string;
-  strMeasure14: string;
-  strMeasure15: string;
-  strMeasure16: string;
-  strMeasure17: string;
-  strMeasure18: string;
-  strMeasure19: string;
-  strMeasure20: string;
-};
+import { fetchDrinkId, fetchMealId } from '../utils/fetchAPI';
+import RecommendationCard from '../components/RecommendationCard/RecommendationCard';
+import { DrinkType, MealType } from '../types';
 
 function RecipeDetails() {
-  const { id } = useParams<{ id: string }>();
+  const { id } = useParams<string>();
   const { pathname } = useLocation();
   const [mealRecipe, setMealRecipe] = useState<MealType>();
   const [drinkRecipe, setDrinkRecipe] = useState<DrinkType>();
   const [ingredients, setIngredients] = useState<string[]>();
-  const [recommendations, setRecommendations] = useState<string[]>();
   const doneRecipes = JSON.parse(localStorage.getItem('doneRecipes') || '[]');
   const inProgressRecipes = JSON.parse(localStorage.getItem('inProgressRecipes') || '[]');
+  const recipeType = pathname.includes('meals') ? 'meals' : 'drinks';
 
   const fetchRecipe = async () => {
     if (pathname.includes('meals')) {
-      const response = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`);
-      const data = await response.json();
-      const recipeData = data.meals[0];
+      const recipeData = await fetchMealId(id as string);
       setMealRecipe(recipeData);
       const ingredientsList = Object.values(recipeData).slice(9, 29)
         .filter((ingredient) => (
@@ -118,9 +24,7 @@ function RecipeDetails() {
         ));
       setIngredients(ingredientsList as string[]);
     } else {
-      const response = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`);
-      const data = await response.json();
-      const recipeData = data.drinks[0];
+      const recipeData = await fetchDrinkId(id as string);
       setDrinkRecipe(recipeData);
       const ingredientsList = Object.values(recipeData).slice(17, 31)
         .filter((ingredient) => (
@@ -186,6 +90,8 @@ function RecipeDetails() {
           <p data-testid="instructions">{ drinkRecipe?.strInstructions }</p>
         </div>
       )}
+      <h2>Recommended</h2>
+      <RecommendationCard recipeCategory={ recipeType } />
       {doneRecipes.some((recipe: { id: string; }) => recipe.id !== id) && (
         <button data-testid="start-recipe-btn">Start Recipe</button>)}
       {inProgressRecipes.some((recipe: { id: string; }) => recipe.id === id) && (
