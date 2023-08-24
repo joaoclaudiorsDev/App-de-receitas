@@ -4,8 +4,6 @@ import { Route, Routes } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Layout } from './components/Layout';
 import Recipes from './components/Recipes';
-import Meals from './pages/Meals';
-import Drinks from './pages/Drinks';
 import RecipeDetails from './pages/RecipeDetails';
 import Footer from './components/Footer';
 import Login from './pages/Login';

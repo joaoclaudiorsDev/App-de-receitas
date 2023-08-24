@@ -2,14 +2,14 @@ import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { fetchDrinkId, fetchMealId } from '../utils/fetchAPI';
 import RecommendationCard from '../components/RecommendationCard/RecommendationCard';
-import { DoneRecipesType, DrinkType, MealType } from '../types';
+import { DoneRecipesType, DrinksType, MealType } from '../types';
 
 function RecipeDetails() {
   const navigate = useNavigate();
   const { id } = useParams<string>();
   const { pathname } = useLocation();
   const [mealRecipe, setMealRecipe] = useState<MealType | undefined>();
-  const [drinkRecipe, setDrinkRecipe] = useState<DrinkType>();
+  const [drinkRecipe, setDrinkRecipe] = useState<DrinksType>();
   const [ingredients, setIngredients] = useState<string[]>();
   // const doneRecipesLocal: DoneRecipesType = [{
   //   id: '178319',
