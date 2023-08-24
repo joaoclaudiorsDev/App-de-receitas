@@ -11,40 +11,40 @@ function RecipeDetails() {
   const [mealRecipe, setMealRecipe] = useState<MealType | undefined>();
   const [drinkRecipe, setDrinkRecipe] = useState<DrinkType>();
   const [ingredients, setIngredients] = useState<string[]>();
-  const doneRecipesLocal: DoneRecipesType = [{
-    id: '178319',
-    type: 'drink',
-    nationality: '',
-    category: 'Cocktail',
-    alcoholicOrNot: 'Alcoholic',
-    name: 'Aquamarine',
-    image: 'https://www.thecocktaildb.com/images/media/drink/zvsre31572902738.jpg',
-    doneDate: '23/6/2020',
-    tags: [],
-  },
-  {
-    id: '52771',
-    type: 'meal',
-    nationality: 'Italian',
-    category: 'Vegetarian',
-    alcoholicOrNot: '',
-    name: 'Spicy Arrabiata Penne',
-    image: 'https://www.themealdb.com/images/media/meals/ustsqw1468250014.jpg',
-    doneDate: '22/6/2020',
-    tags: ['Pasta', 'Curry'],
-  }];
-  localStorage.setItem('doneRecipes', JSON.stringify(doneRecipesLocal));
-  const doneRecipes = JSON.parse(localStorage.getItem('doneRecipes') || '[]');
-  const recipesInProgress = {
-    meals: {
-      52771: [],
-    },
-    drinks: {
-      178319: [],
-    },
-  };
-  localStorage.setItem('inProgressRecipes', JSON.stringify(recipesInProgress));
-  const inProgressRecipes = JSON.parse(localStorage.getItem('inProgressRecipes') || '[]');
+  // const doneRecipesLocal: DoneRecipesType = [{
+  //   id: '178319',
+  //   type: 'drink',
+  //   nationality: '',
+  //   category: 'Cocktail',
+  //   alcoholicOrNot: 'Alcoholic',
+  //   name: 'Aquamarine',
+  //   image: 'https://www.thecocktaildb.com/images/media/drink/zvsre31572902738.jpg',
+  //   doneDate: '23/6/2020',
+  //   tags: [],
+  // },
+  // {
+  //   id: '52771',
+  //   type: 'meal',
+  //   nationality: 'Italian',
+  //   category: 'Vegetarian',
+  //   alcoholicOrNot: '',
+  //   name: 'Spicy Arrabiata Penne',
+  //   image: 'https://www.themealdb.com/images/media/meals/ustsqw1468250014.jpg',
+  //   doneDate: '22/6/2020',
+  //   tags: ['Pasta', 'Curry'],
+  // }];
+  // localStorage.setItem('doneRecipes', JSON.stringify(doneRecipesLocal));
+  // const doneRecipes = JSON.parse(localStorage.getItem('doneRecipes') || '[]');
+  // const recipesInProgress = {
+  //   meals: {
+  //     52771: [],
+  //   },
+  //   drinks: {
+  //     178319: [],
+  //   },
+  // };
+  // localStorage.setItem('inProgressRecipes', JSON.stringify(recipesInProgress));
+  // const inProgressRecipes = JSON.parse(localStorage.getItem('inProgressRecipes') || '[]');
 
   const fetchRecipe = async () => {
     if (pathname.includes('meals')) {
@@ -126,21 +126,21 @@ function RecipeDetails() {
       <h2>Recommended</h2>
       <RecommendationCard />
       <div style={ { position: 'fixed', bottom: '0' } }>
-        {/* <button
+        <button
           data-testid="start-recipe-btn"
           style={ { position: 'fixed', bottom: '0' } }
           onClick={ () => navigate(`${pathname}/in-progress`) }
         >
           Start Recipe
-        </button> */}
-        {!doneRecipes.some((recipe: { id: string; }) => recipe.id === id) && (
+        </button>
+        {/* {!doneRecipes.some((recipe: { id: string; }) => recipe.id === id) && (
           <button
             data-testid="start-recipe-btn"
             style={ { position: 'fixed', bottom: '0' } }
             onClick={ () => navigate(`${pathname}/in-progress`) }
           >
             Start Recipe
-          </button>)}
+          </button>)} */}
       </div>
       <div style={ { position: 'fixed', bottom: '0' } }>
         {/* <button

@@ -12,10 +12,14 @@ function RecommendationCard() {
   const [recommendations, setRecommendations] = useState<RecommendationType[]>([]);
 
   const fetchRecommendations = async () => {
-    const recipes = pathname.includes('meals')
-      ? await fetchDrinksRecommendation() : await fetchMealsRecommendation();
-    const recommendationsData = recipes.slice(0, 6);
-    setRecommendations(recommendationsData);
+    try {
+      const recipes = pathname.includes('meals')
+        ? await fetchDrinksRecommendation() : await fetchMealsRecommendation();
+      const recommendationsData = recipes.slice(0, 6);
+      setRecommendations(recommendationsData);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
