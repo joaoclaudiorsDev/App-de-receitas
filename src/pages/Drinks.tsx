@@ -1,26 +1,23 @@
+import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { ReduxState } from '../types';
 
 function Drinks() {
-  const recipes = useSelector(
-    (state: ReduxState) => state.recipes.drinkRecipes,
-  );
-
+  const { id } = useParams();
+  const { drinks } = useSelector((state: ReduxState) => state.recipes);
+  const currDrink = drinks.find((drink) => drink.idDrink === id);
   return (
-    <>
-      {
-        recipes.map((recipe, index) => (
-          <div key={ recipe.idDrink } data-testid={ `${index}-recipe-card` }>
-            <img
-              src={ recipe.strDrinkThumb }
-              alt={ recipe.strDrink }
-              data-testid={ `${index}-card-img` }
-            />
-            <h2 data-testid={ `${index}-card-name` }>{recipe.strDrink}</h2>
-          </div>
-        ))
-      }
-    </>
+    <div
+      key={ currDrink?.idDrink }
+      data-testid={ `${currDrink}-recipe-card` }
+    >
+      <h3 data-testid={ `${currDrink}-card-name` }>{ currDrink?.strDrink }</h3>
+      <img
+        src={ currDrink?.strDrinkThumb }
+        alt={ currDrink?.strDrink }
+        data-testid={ `${currDrink}-card-img` }
+      />
+    </div>
   );
 }
 

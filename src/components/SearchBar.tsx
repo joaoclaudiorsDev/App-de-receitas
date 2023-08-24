@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { checkValuesToFetch } from '../utils/checkValuesToFetch';
 import { checkFetchErrorFirstLetter } from '../utils/checkFetchErrors';
-import { createDrinkRecipes, createMealRecipes } from '../redux/actions';
+import { saveRecipesDrinks, saveRecipesMeals } from '../redux/actions';
 
 function SearchBar() {
   const [inputValue, setInputValue] = useState('');
@@ -26,23 +26,22 @@ function SearchBar() {
       pathname,
       inputValue,
     );
+    console.log(recipes);
     checkFetchErrorFirstLetter(selected, inputValue);
     if (!recipes) {
       return window.alert('Sorry, we haven\'t found any recipes for these filters.');
     }
-    if (recipes.length === 1 && pathname === '/meals') {
-      dispatch(createMealRecipes(recipes));
-      return navigate(`/meals/${recipes[0].idMeal}`);
+    if (pathname === '/meals' && recipes.meals.length > 0) {
+      if (recipes.meals.length === 1) {
+        navigate(`/meals/${recipes.meals[0].idMeal}`);
+      }
+      dispatch(saveRecipesMeals(recipes));
     }
-    if (recipes.length === 1 && pathname === '/drinks') {
-      dispatch(createDrinkRecipes(recipes));
-      return navigate(`/drinks/${recipes[0].idDrink}`);
-    }
-    if (recipes && pathname === '/drinks') {
-      dispatch(createDrinkRecipes(recipes.slice(0, 12)));
-    }
-    if (recipes && pathname === '/meals') {
-      dispatch(createMealRecipes(recipes.slice(0, 12)));
+    if (pathname === '/drinks' && recipes.drinks.length > 0) {
+      if (recipes.drinks.length === 1) {
+        navigate(`/drinks/${recipes.drinks[0].idDrink}`);
+      }
+      dispatch(saveRecipesDrinks(recipes));
     }
   };
 
