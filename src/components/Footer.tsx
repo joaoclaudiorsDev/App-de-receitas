@@ -23,7 +23,7 @@ function Footer() {
         <NavLink to="/drinks">
           <img src={ drinkIcon } data-testid="drinks-bottom-btn" alt="" />
         </NavLink>
-        <NavLink to="meals">
+        <NavLink to="/meals">
           <img src={ mealIcon } data-testid="meals-bottom-btn" alt="" />
         </NavLink>
       </nav>
