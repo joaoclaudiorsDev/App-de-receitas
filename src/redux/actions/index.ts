@@ -6,9 +6,6 @@ export const SAVE_RECIPES_DRINKS = 'SAVE_RECIPES_DRINKS';
 export const SAVE_CATEGORIES_DRINKS = 'SAVE_CATEGORIES_DRINKS';
 export const SAVE_CATEGORIES_MEALS = 'SAVE_CATEGORIES_MEALS';
 
-export const SAVE_DRINK_RECIPES = 'SAVE_DRINK_RECIPES';
-export const SAVE_MEAL_RECIPES = 'SAVE_MEAL_RECIPES';
-
 export const actionCreator = (payload: string) => ({
   type: SAVE_USER,
   payload,
@@ -19,15 +16,15 @@ export const createUser = (payload: string) => ({
   payload,
 });
 
-export const createDrinkRecipes = (drinks: Drink[] | void) => ({
-  type: SAVE_DRINK_RECIPES,
-  payload: drinks,
-});
+// export const createDrinkRecipes = (drinks: Drink[] | void) => ({
+//   type: SAVE_DRINK_RECIPES,
+//   payload: drinks,
+// });
 
-export const createMealRecipes = (meals: Meal[] | void) => ({
-  type: SAVE_MEAL_RECIPES,
-  payload: meals,
-});
+// export const createMealRecipes = (meals: Meal[] | void) => ({
+//   type: SAVE_MEAL_RECIPES,
+//   payload: meals,
+// });
 
 export const saveRecipesMeals = (payload: MealType[]) => {
   return {

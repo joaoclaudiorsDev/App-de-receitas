@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { Dispatch, ReduxStateTemp } from '../types';
+import { Dispatch, ReduxState } from '../types';
 import { fetchCategoriesAPI, fetchRecipesAPI } from '../redux/actions';
 import {
   DRINKS_API_URL,
@@ -17,20 +17,17 @@ function Recipes() {
   const [filterButtonController, setFilterButtonController] = useState(true);
   const dispatch: Dispatch = useDispatch();
   const { categories, drinks, meals } = useSelector(
-    (state: ReduxStateTemp) => state.recipes,
+    (state: ReduxState) => state.recipes,
   );
 
-  const handleBtnAll = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    event.preventDefault();
+  const handleBtnAll = () => {
     if (pathname === '/meals') dispatch(fetchRecipesAPI(MEALS_API_URL, MEALS_TYPE));
     if (pathname === '/drinks') dispatch(fetchRecipesAPI(DRINKS_API_URL, DRINKS_TYPE));
   };
 
-  const handleCategoryFilter = async (event: React
-    .MouseEvent<HTMLButtonElement, MouseEvent>, apiUrl: string) => {
-    event.preventDefault();
+  const handleCategoryFilter = async (apiUrl: string) => {
     setFilterButtonController(true);
-    if (!filterButtonController) return handleBtnAll(event);
+    if (!filterButtonController) return handleBtnAll();
     if (pathname === '/meals') {
       dispatch(fetchRecipesAPI(apiUrl, MEALS_TYPE));
       dispatch(fetchCategoriesAPI(MEALS_CATEGORIES_API_URL, MEALS_TYPE));
@@ -54,57 +51,56 @@ function Recipes() {
   return (
     <section>
       <button
+        type="button"
         data-testid="All-category-filter"
-        onClick={ (event) => handleBtnAll(event) }
+        onClick={ handleBtnAll }
       >
         All
       </button>
-      {pathname === '/meals' && categories.slice(0, 5)
+      {pathname === '/meals' && categories?.slice(0, 5)
         .map((category, index) => (
           <button
+            type="button"
             key={ index }
             data-testid={ `${category.strCategory}-category-filter` }
-            onClick={ (event) => handleCategoryFilter(event, `https://www.themealdb.com/api/json/v1/1/filter.php?c=${category.strCategory}`) }
+            onClick={ () => handleCategoryFilter(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${category.strCategory}`) }
           >
             { category.strCategory }
           </button>
         ))}
-      { (pathname === '/meals' && meals.slice(0, 12).map((recipe, index) => (
-        <div key={ index }>
+      { (pathname === '/meals' && meals?.slice(0, 12).map((recipe, index) => (
+        <div key={ index } data-testid={ `${index}-recipe-card` }>
           <Link to={ `/meals/${recipe.idMeal}` }>
-            <div key={ recipe.idMeal } data-testid={ `${index}-recipe-card` }>
-              <h3 data-testid={ `${index}-card-name` }>{ recipe.strMeal }</h3>
-              <img
-                src={ recipe.strMealThumb }
-                alt={ recipe.strMeal }
-                data-testid={ `${index}-card-img` }
-              />
-            </div>
+            <h3 data-testid={ `${index}-card-name` }>{ recipe.strMeal }</h3>
+            <img
+              src={ recipe.strMealThumb }
+              alt={ recipe.strMeal }
+              data-testid={ `${index}-card-img` }
+            />
           </Link>
         </div>
       )))}
-      {pathname === '/drinks' && categories.slice(0, 5)
+      {pathname === '/drinks' && categories?.slice(0, 5)
         .map((category, index) => (
           <button
+            type="button"
             key={ index }
             data-testid={ `${category.strCategory}-category-filter` }
-            onClick={ (event) => handleCategoryFilter(event, `https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=${category.strCategory}`) }
+            onClick={ () => handleCategoryFilter(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=${category.strCategory}`) }
           >
             { category.strCategory }
           </button>
         ))}
-      { (pathname === '/drinks' && drinks.slice(0, 12)
+      { (pathname === '/drinks' && drinks?.slice(0, 12)
         .map((drink, index) => (
-          <div key={ index }>
+          <div key={ index } data-testid={ `${index}-recipe-card` }>
             <Link to={ `/drinks/${drink.idDrink}` }>
-              <div key={ drink.idDrink } data-testid={ `${index}-recipe-card` }>
-                <h3 data-testid={ `${index}-card-name` }>{ drink.strDrink }</h3>
-                <img
-                  src={ drink.strDrinkThumb }
-                  alt={ drink.strDrink }
-                  data-testid={ `${index}-card-img` }
-                />
-              </div>
+              <h3 data-testid={ `${index}-card-name` }>{ drink.strDrink }</h3>
+              <img
+                src={ drink.strDrinkThumb }
+                alt={ drink.strDrink }
+                data-testid={ `${index}-card-img` }
+              />
             </Link>
           </div>
         )))}
