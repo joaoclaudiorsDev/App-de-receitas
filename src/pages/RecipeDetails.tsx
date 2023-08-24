@@ -8,7 +8,7 @@ function RecipeDetails() {
   const navigate = useNavigate();
   const { id } = useParams<string>();
   const { pathname } = useLocation();
-  const [mealRecipe, setMealRecipe] = useState<MealType>();
+  const [mealRecipe, setMealRecipe] = useState<MealType | undefined>();
   const [drinkRecipe, setDrinkRecipe] = useState<DrinkType>();
   const [ingredients, setIngredients] = useState<string[]>();
   const doneRecipesLocal: DoneRecipesType = [{

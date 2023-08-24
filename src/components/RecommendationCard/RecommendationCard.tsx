@@ -12,11 +12,9 @@ function RecommendationCard() {
   const [recommendations, setRecommendations] = useState<RecommendationType[]>([]);
 
   const fetchRecommendations = async () => {
-    const MAX_RECOMMENDATIONS = 6;
-    const MIN_RECOMMENDATIONS = 0;
     const recipes = pathname.includes('meals')
       ? await fetchDrinksRecommendation() : await fetchMealsRecommendation();
-    const recommendationsData = recipes.slice(MIN_RECOMMENDATIONS, MAX_RECOMMENDATIONS);
+    const recommendationsData = recipes.slice(0, 6);
     setRecommendations(recommendationsData);
   };
 
