@@ -4,16 +4,9 @@ import { useNavigate } from 'react-router-dom';
 import { isEmailValid, isPasswordValid } from '../utils/loginValidation';
 import { createUser } from '../redux/actions';
 
-// type StateType = {
-//   user: {
-//     email: string;
-//   };
-// };
-
 function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  // const { email: userEmail } = useSelector((state: StateType) => state.user);
 
   const [form, setForm] = useState({
     email: '',
