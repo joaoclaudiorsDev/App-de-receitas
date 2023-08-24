@@ -4,10 +4,9 @@ import { Route, Routes } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Layout } from './components/Layout';
 import Recipes from './components/Recipes';
+import RecipeDetails from './pages/RecipeDetails';
 import Footer from './components/Footer';
 import Login from './pages/Login';
-import Meals from './pages/Meals';
-import Drinks from './pages/Drinks';
 
 function App() {
   return (
@@ -21,10 +20,10 @@ function App() {
           <Route path="/done-recipes" element={ <h1>...</h1> } />
           <Route path="/favorite-recipes" element={ <h1>...</h1> } />
         </Route>
-        <Route path="/meals/:id" element={ <Meals /> } />
-        <Route path="/drinks/:id" element={ <Drinks /> } />
-        <Route path="/meals/:id-da-receita/in-progress" element={ <h1>...</h1> } />
-        <Route path="/drinks/:id-da-receita/in-progress" element={ <h1>...</h1> } />
+        <Route path="/meals/:id" element={ <RecipeDetails /> } />
+        <Route path="/drinks/:id" element={ <RecipeDetails /> } />
+        <Route path="/meals/:id/in-progress" element={ <h1>...</h1> } />
+        <Route path="/drinks/:id/in-progress" element={ <h1>...</h1> } />
       </Routes>
       <Footer />
     </>

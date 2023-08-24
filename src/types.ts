@@ -135,11 +135,6 @@ export type RecipesTypeRedux = {
   categories: CategoryType[],
 };
 
-export type ReduxState = {
-  user: UserType,
-  recipes: RecipesTypeRedux,
-};
-
 export interface Drink {
   strDrink: string
   strDrinkThumb: string
@@ -152,3 +147,45 @@ export interface Meal {
   idMeal: string
 }
 export type Dispatch = ThunkDispatch<ReduxState, null, AnyAction>;
+
+export interface ReduxState {
+  user: {
+    email: string
+  },
+  recipes: {
+    drinkRecipes: Drink[],
+    mealRecipes: Meal[],
+  }
+}
+
+export type RecommendationType = {
+  strMealThumb?: string;
+  strMeal?: string;
+  strDrinkThumb?: string;
+  strDrink?: string;
+  idMeal?: string;
+  idDrink?: string;
+};
+
+export type DoneRecipeType = {
+  id: string;
+  type: string;
+  nationality: string;
+  category: string;
+  alcoholicOrNot: string;
+  name: string;
+  image: string;
+  doneDate: string;
+  tags: string[];
+};
+
+export type DoneRecipesType = DoneRecipeType[];
+
+export type InProgressRecipeType = {
+  drinks: {
+    idDrink: string[];
+  }
+  meals: {
+    idMeal: string[];
+  }
+};
