@@ -7,11 +7,12 @@ import App from '../App';
 import { drinksMock } from './mocks/Drinks';
 import { drinksFilterCategory, mealsFilterCategory } from './mocks/Recipes';
 
+const all = 'All-category-filter';
+
 describe(('Recipe Component'), async () => {
   afterEach(() => {
     vi.clearAllMocks();
   });
-  const allBtn = await screen.findByTestId('All-category-filter');
 
   test(('Test if is loading meals'), async () => {
     global.fetch = vi.fn().mockResolvedValue({
@@ -62,8 +63,6 @@ describe(('Recipe Component'), async () => {
 
     renderWithRouterAndRedux(<App />, { initialEntries: ['/drinks'] });
 
-    expect(allBtn).toBeInTheDocument();
-
     const ordinaryBtn = await screen.findByTestId('Ordinary Drink-category-filter');
     expect(ordinaryBtn).toBeInTheDocument();
 
@@ -86,6 +85,7 @@ describe(('Recipe Component'), async () => {
 
     renderWithRouterAndRedux(<App />, { initialEntries: ['/meals'] });
 
+    const allBtn = await screen.findByTestId(all);
     expect(allBtn).toBeInTheDocument();
 
     const beefBtn = await screen.findByTestId('Beef-category-filter');
@@ -158,7 +158,7 @@ describe(('Recipe Component'), async () => {
     });
 
     const { store } = renderWithRouterAndRedux(<App />, { initialEntries: ['/drinks'] });
-
+    const allBtn = await screen.findByTestId(all);
     expect(allBtn).toBeInTheDocument();
 
     await userEvent.click(allBtn);
@@ -174,7 +174,7 @@ describe(('Recipe Component'), async () => {
 
     const { store } = renderWithRouterAndRedux(<App />, { initialEntries: ['/meals'] });
 
-    const allBttn = await screen.findByTestId('All-category-filter');
+    const allBttn = await screen.findByTestId(all);
     expect(allBttn).toBeInTheDocument();
 
     await userEvent.click(allBttn);
