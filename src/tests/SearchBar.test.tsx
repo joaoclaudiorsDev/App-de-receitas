@@ -1,10 +1,11 @@
-import { screen, waitFor } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
 import App from '../App';
 import { renderWithRouterAndRedux } from './helpers/RenderWith';
 import { drinksMock, drinkByName, noDrink } from './mocks/Drinks';
-import { mealsMock, mealByName, noMeals } from './mocks/Meals';
+import { mealsMock, noMeals } from './mocks/Meals';
+import { detailsMockMeals } from './mocks/DetailsMock';
 
 describe('Testing SearchBar errors on Meals page', () => {
   afterEach(() => {
@@ -43,7 +44,7 @@ describe('Testing SearchBar errors on Meals page', () => {
     vi.spyOn(window, 'alert').mockImplementation(() => {});
 
     global.fetch = vi.fn().mockResolvedValue({
-      json: async () => (mealsMock),
+      json: async () => (noMeals),
     });
 
     const searchBtn = screen.getByRole('button', { name: /search-icon/i });
@@ -101,7 +102,7 @@ describe('Testing SearchBar errors on Drinks page', () => {
     vi.spyOn(window, 'alert').mockImplementation(() => {});
 
     global.fetch = vi.fn().mockResolvedValue({
-      json: async () => (drinksMock),
+      json: async () => (noDrink),
     });
 
     const searchBtn = screen.getByRole('button', { name: /search-icon/i });
@@ -170,7 +171,7 @@ describe('Testing SearchBar component on Meals page', () => {
     await userEvent.click(ingredientInput);
     await userEvent.click(submitButton);
 
-    const result = await screen.findAllByRole('heading', { level: 2 });
+    const result = await screen.findAllByRole('heading', { level: 3 });
 
     expect(result).toHaveLength(12);
   });
@@ -179,7 +180,7 @@ describe('Testing SearchBar component on Meals page', () => {
     renderWithRouterAndRedux(<App />, { initialEntries: ['/meals'] });
 
     global.fetch = vi.fn().mockResolvedValue({
-      json: async () => (mealByName),
+      json: async () => (detailsMockMeals),
     });
 
     const searchBtn = screen.getByRole('button', { name: /search-icon/i });
@@ -190,11 +191,11 @@ describe('Testing SearchBar component on Meals page', () => {
     const nameInput = screen.getByRole('radio', { name: /name/i });
     const submitButton = screen.getByRole('button', { name: /pesquisar/i });
 
-    await userEvent.type(searchInput, 'apam');
+    await userEvent.type(searchInput, 'teriyaki');
     await userEvent.click(nameInput);
     await userEvent.click(submitButton);
 
-    const result = await screen.findByRole('heading', { name: /apam balik/i });
+    const result = await screen.findByRole('heading', { name: /teriyaki/i });
 
     expect(result).toBeInTheDocument();
   });
@@ -296,7 +297,7 @@ describe('Testing SearchBar component on Drinks page', () => {
     await userEvent.click(ingredientInput);
     await userEvent.click(submitButton);
 
-    const result = await screen.findAllByRole('heading', { level: 2 });
+    const result = await screen.findAllByRole('heading', { level: 3 });
 
     expect(result).toHaveLength(12);
   });

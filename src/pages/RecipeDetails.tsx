@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { fetchDrinkId, fetchMealId } from '../utils/fetchAPI';
 import RecommendationCard from '../components/RecommendationCard/RecommendationCard';
-import { DoneRecipesType, DrinksType, MealType } from '../types';
+import { DrinksType, MealType } from '../types';
 
 function RecipeDetails() {
   const navigate = useNavigate();
