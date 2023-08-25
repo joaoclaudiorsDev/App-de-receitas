@@ -7,10 +7,12 @@ import App from '../App';
 import { drinksMock } from './mocks/Drinks';
 import { drinksFilterCategory, mealsFilterCategory } from './mocks/Recipes';
 
-describe(('Recipe Component'), () => {
+describe(('Recipe Component'), async () => {
   afterEach(() => {
     vi.clearAllMocks();
   });
+  const allBtn = await screen.findByTestId('All-category-filter');
+
   test(('Test if is loading meals'), async () => {
     global.fetch = vi.fn().mockResolvedValue({
       json: async () => (mealsMock),
@@ -60,7 +62,6 @@ describe(('Recipe Component'), () => {
 
     renderWithRouterAndRedux(<App />, { initialEntries: ['/drinks'] });
 
-    const allBtn = await screen.findByTestId('All-category-filter');
     expect(allBtn).toBeInTheDocument();
 
     const ordinaryBtn = await screen.findByTestId('Ordinary Drink-category-filter');
@@ -85,7 +86,6 @@ describe(('Recipe Component'), () => {
 
     renderWithRouterAndRedux(<App />, { initialEntries: ['/meals'] });
 
-    const allBtn = await screen.findByTestId('All-category-filter');
     expect(allBtn).toBeInTheDocument();
 
     const beefBtn = await screen.findByTestId('Beef-category-filter');
@@ -159,10 +159,9 @@ describe(('Recipe Component'), () => {
 
     const { store } = renderWithRouterAndRedux(<App />, { initialEntries: ['/drinks'] });
 
-    const allBttn = await screen.findByTestId('All-category-filter');
-    expect(allBttn).toBeInTheDocument();
+    expect(allBtn).toBeInTheDocument();
 
-    await userEvent.click(allBttn);
+    await userEvent.click(allBtn);
 
     const currentStates = store.getState();
     expect(currentStates).toHaveProperty('user', { email: '' });
