@@ -58,7 +58,7 @@ function Recipes() {
         All
       </button>
       {pathname === '/meals' && categories?.slice(0, 5)
-        .map((category, index) => (
+        .map((category: any, index: any) => (
           <button
             type="button"
             key={ index }
@@ -68,7 +68,7 @@ function Recipes() {
             { category.strCategory }
           </button>
         ))}
-      { (pathname === '/meals' && meals?.slice(0, 12).map((recipe, index) => (
+      { (pathname === '/meals' && meals?.slice(0, 12).map((recipe: any, index: any) => (
         <div key={ index } data-testid={ `${index}-recipe-card` }>
           <Link to={ `/meals/${recipe.idMeal}` }>
             <h3 data-testid={ `${index}-card-name` }>{ recipe.strMeal }</h3>
@@ -81,7 +81,7 @@ function Recipes() {
         </div>
       )))}
       {pathname === '/drinks' && categories?.slice(0, 5)
-        .map((category, index) => (
+        .map((category: any, index: any) => (
           <button
             type="button"
             key={ index }
@@ -92,7 +92,7 @@ function Recipes() {
           </button>
         ))}
       { (pathname === '/drinks' && drinks?.slice(0, 12)
-        .map((drink, index) => (
+        .map((drink: any, index: any) => (
           <div key={ index } data-testid={ `${index}-recipe-card` }>
             <Link to={ `/drinks/${drink.idDrink}` }>
               <h3 data-testid={ `${index}-card-name` }>{ drink.strDrink }</h3>
