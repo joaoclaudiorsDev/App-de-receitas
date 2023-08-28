@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
-import '../pages/RecipeDetails.css';
+import styles from './FavoriteButton.module.css';
 import { DrinksType, MealType } from '../types';
 
 type FavoritePorpsType = {
@@ -66,6 +66,7 @@ function FavoriteButton(favoriteProps: FavoritePorpsType) {
       htmlFor="favorite"
     >
       <input
+        className={ styles.favoriteButton }
         type="checkbox"
         id="favorite"
         onClick={ handleFavorite }

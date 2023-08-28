@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import './App.css';
 import { Route, Routes } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -16,7 +16,7 @@ function App() {
         <Route path="/meals" element={ <Recipes /> } />
         <Route path="/drinks" element={ <Recipes /> } />
         <Route path="/profile" element={ <h1>...</h1> } />
-        <Route path="/done-recipes" element={ <h1>...</h1> } />
+        <Route path="/done-recipes" element={ <DoneRecipes /> } />
         <Route path="/favorite-recipes" element={ <h1>...</h1> } />
       </Route>
       <Route path="/meals/:id" element={ <RecipeDetails /> } />
