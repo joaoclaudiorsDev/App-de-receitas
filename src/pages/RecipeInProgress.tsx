@@ -3,6 +3,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { fetchDrinkId, fetchMealId } from '../utils/fetchAPI';
 import { DrinksType, MealType } from '../types';
 import styles from './RecipeInProgess.module.css';
+import FavoriteButton from '../components/FavoriteButton';
 
 function RecipeInProgess() {
   const navigate = useNavigate();
@@ -38,18 +39,30 @@ function RecipeInProgess() {
     console.log(pathname);
   }, [id]);
 
-  const handleCheckboxChange = (index) => {
+  const handleCheckboxChange = (index: any) => {
     const updatedCheckedIngredients = {
       ...done,
       [index]: !done[index],
     };
     setDone(updatedCheckedIngredients);
-    const areAllChecked = ingredients.every((ingredient, index) => updatedCheckedIngredients[index]);
+    const areAllChecked = ingredients
+      ? ingredients
+        .every((ingredient, index) => updatedCheckedIngredients[index]) : false;
     setAllChecked(areAllChecked);
   };
 
   const handleClick = () => {
     navigate('/done-recipes');
+  };
+
+  const handleShare = () => {
+    navigator.clipboard.writeText(`http://localhost:3000${pathname}`);
+    const alert = document.createElement('div');
+    alert.innerHTML = 'Link copied!';
+    document.body.appendChild(alert);
+    setTimeout(() => {
+      document.body.removeChild(alert);
+    }, 2000);
   };
 
   return (
@@ -83,6 +96,14 @@ function RecipeInProgess() {
               </li>
             ))}
           </ul>
+          <button
+            data-testid="share-btn"
+            type="button"
+            onClick={ handleShare }
+          >
+            Share
+          </button>
+          <FavoriteButton mealRecipe={ mealRecipe } drinkRecipe={ drinkRecipe } />
           <button
             type="button"
             onClick={ handleClick }
@@ -128,6 +149,14 @@ function RecipeInProgess() {
               </li>
             ))}
           </ul>
+          <button
+            data-testid="share-btn"
+            type="button"
+            onClick={ handleShare }
+          >
+            Share
+          </button>
+          <FavoriteButton mealRecipe={ mealRecipe } drinkRecipe={ drinkRecipe } />
           <button type="button" onClick={ handleClick }>Finish recipe</button>
           <p data-testid="recipe-category">{ drinkRecipe?.strAlcoholic }</p>
           <p data-testid="instructions">{ drinkRecipe?.strInstructions }</p>
