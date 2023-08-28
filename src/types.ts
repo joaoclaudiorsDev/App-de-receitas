@@ -133,6 +133,9 @@ export type RecipesTypeRedux = {
   meals: MealType[],
   drinks: DrinksType[],
   categories: CategoryType[],
+  doneRecipes: DoneRecipeType[],
+  favoriteRecipes: FavoriteRecipesType[],
+  inProgressRecipes: InProgressRecipeType,
 };
 
 export interface Drink {
@@ -152,10 +155,7 @@ export interface ReduxState {
   user: {
     email: string
   },
-  recipes: {
-    drinkRecipes: Drink[],
-    mealRecipes: Meal[],
-  }
+  recipes: RecipesTypeRedux
 }
 
 export type RecommendationType = {
@@ -179,13 +179,25 @@ export type DoneRecipeType = {
   tags: string[];
 };
 
-export type DoneRecipesType = DoneRecipeType[];
-
 export type InProgressRecipeType = {
-  drinks: {
-    idDrink: string[];
-  }
-  meals: {
-    idMeal: string[];
-  }
+  drinks: InProgressDrinkType;
+  meals: InProgressMealsType;
+};
+
+export type InProgressDrinkType = {
+  [key:string]: string[];
+};
+
+export type InProgressMealsType = {
+  [key:string]: string[];
+};
+
+export type FavoriteRecipesType = {
+  id: string;
+  type: string;
+  nationality: string;
+  category: string;
+  alcoholicOrNot: string;
+  name: string;
+  image: string;
 };
