@@ -7,6 +7,7 @@ import Recipes from './components/Recipes';
 import RecipeDetails from './pages/RecipeDetails';
 import Footer from './components/Footer';
 import Login from './pages/Login';
+import RecipeInProgess from './pages/RecipeInProgress';
 
 function App() {
   return (
@@ -22,8 +23,8 @@ function App() {
         </Route>
         <Route path="/meals/:id" element={ <RecipeDetails /> } />
         <Route path="/drinks/:id" element={ <RecipeDetails /> } />
-        <Route path="/meals/:id/in-progress" element={ <h1>...</h1> } />
-        <Route path="/drinks/:id/in-progress" element={ <h1>...</h1> } />
+        <Route path="/meals/:id/in-progress" element={ <RecipeInProgess /> } />
+        <Route path="/drinks/:id/in-progress" element={ <RecipeInProgess /> } />
       </Routes>
       <Footer />
     </>
