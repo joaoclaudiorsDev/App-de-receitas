@@ -10,6 +10,12 @@ const INITIAL_STATE = {
   meals: [],
   drinks: [],
   categories: [],
+  doneRecipes: [],
+  favoriteRecipes: [],
+  inProgressRecipes: {
+    drinks: {},
+    meals: {},
+  },
 };
 
 function recipes(state = INITIAL_STATE, action: AnyAction) {
