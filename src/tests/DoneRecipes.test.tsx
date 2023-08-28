@@ -1,5 +1,6 @@
 import { vi } from 'vitest';
 import { screen } from '@testing-library/dom';
+import { useNavigate } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 import { doneRecipes } from './mocks/DoneRecipes';
 import { renderWithRouterAndRedux } from './helpers/RenderWith';

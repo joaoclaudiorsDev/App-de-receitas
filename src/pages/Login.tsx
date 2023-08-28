@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { isEmailValid, isPasswordValid } from '../utils/loginValidation';
 import { createUser } from '../redux/actions';
+import { doneRecipes } from '../tests/mocks/DoneRecipes';
 
 function Login() {
   const dispatch = useDispatch();

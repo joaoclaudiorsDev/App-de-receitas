@@ -6,8 +6,6 @@ import { doneRecipes } from '../tests/mocks/DoneRecipes';
 function DoneRecipes() {
   const [recipesDone, setRecipesDone] = useState<DoneRecipeType[]>();
   const [onOff, setOnOff] = useState(false);
-  const reponse = localStorage.getItem('doneRecipes');
-  setRecipesDone(JSON.parse(reponse));
 
   const handleShare = (recipeId: string, recipeType: string) => {
     setOnOff(!onOff);
@@ -16,6 +14,7 @@ function DoneRecipes() {
 
   const handleFilter = (type: string) => {
     if (type === 'reset') {
+      const reponse = localStorage.getItem('doneRecipes');
       setRecipesDone(JSON.parse(reponse as any));
     }
     if (type === 'meals') {
@@ -29,8 +28,8 @@ function DoneRecipes() {
   };
 
   useEffect(() => {
-    localStorage.setItem('doneRecipes', JSON.stringify(doneRecipes));
-    // setRecipesDone(doneRecipes.doneRecipes);
+    const reponse = localStorage.getItem('doneRecipes');
+    setRecipesDone(JSON.parse(reponse as any));
   }, []);
 
   return (
@@ -63,20 +62,19 @@ function DoneRecipes() {
           <Link to={ `/${recipe.type}s/${recipe.id}` }>
             <h3 data-testid={ `${index}-horizontal-name` }>{ recipe.name }</h3>
             <img
+              style={ { width: '330px', height: 'auto' } }
+              data-testid={ `${index}-horizontal-image` }
               src={ recipe.image }
               alt={ recipe.name }
-              data-testid={ `${index}-horizontal-image` }
             />
           </Link>
           { recipe.type === 'meal'
             ? <p data-testid={ `${index}-horizontal-top-text` }>
               { `${recipe.nationality} - ${recipe.category}` }
               </p>
-            : <p
-                data-testid={ `${index}-horizontal-top-text` }
-            >
+            : <p data-testid={ `${index}-horizontal-top-text` }>
               { recipe.alcoholicOrNot }
-              </p>}
+            </p>}
           <p data-testid={ `${index}-horizontal-done-date` }>{ recipe.doneDate }</p>
           { recipe.tags.map((tag: any, i: any) => (
             <p
