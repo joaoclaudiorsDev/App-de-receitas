@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { DoneRecipeType } from '../types';
 import { doneRecipes } from '../tests/mocks/DoneRecipes';
+import ParagraphComponent from './ParagraphComponent';
 
 function DoneRecipes() {
   const [recipesDone, setRecipesDone] = useState<DoneRecipeType[]>();
@@ -68,13 +69,7 @@ function DoneRecipes() {
               alt={ recipe.name }
             />
           </Link>
-          { recipe.type === 'meal'
-            ? <p data-testid={ `${index}-horizontal-top-text` }>
-              { `${recipe.nationality} - ${recipe.category}` }
-              </p>
-            : <p data-testid={ `${index}-horizontal-top-text` }>
-              { recipe.alcoholicOrNot }
-            </p>}
+          <ParagraphComponent index={ index } recipe={ recipe } />
           <p data-testid={ `${index}-horizontal-done-date` }>{ recipe.doneDate }</p>
           { recipe.tags.map((tag: any, i: any) => (
             <p
