@@ -26,9 +26,10 @@ function SearchBar() {
       pathname,
       inputValue,
     );
-    console.log(recipes);
-    checkFetchErrorFirstLetter(selected, inputValue);
-    if (!recipes) {
+    if (selected === 'firstLetter' && inputValue.length !== 1) {
+      return window.alert('Your search must have only 1 (one) character');
+    }
+    if (recipes.drinks === null || recipes.meals === null) {
       return window.alert('Sorry, we haven\'t found any recipes for these filters.');
     }
     if (pathname === '/meals' && recipes.meals.length > 0) {
