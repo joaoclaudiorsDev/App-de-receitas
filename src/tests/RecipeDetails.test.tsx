@@ -51,6 +51,19 @@ describe('RecipeDetails', () => {
     expect(shareButton).toBeInTheDocument();
     expect(favoriteButton).toBeInTheDocument();
     expect(startButton).toBeInTheDocument();
+
+    const writeText = vi.fn();
+
+    Object.assign(navigator, {
+      clipboard: {
+        writeText,
+      },
+    });
+
+    window.alert = vi.fn();
+
+    await userEvent.click(shareButton);
+    expect(writeText).toHaveBeenCalled();
   });
   test('test a meal with inProgress', async () => {
     global.fetch = vi.fn().mockResolvedValue({
