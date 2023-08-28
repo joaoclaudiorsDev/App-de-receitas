@@ -10,23 +10,22 @@ import Profile from './pages/Profile';
 
 function App() {
   return (
-    <>
-      <Routes>
-        <Route path="/" element={ <Login /> } />
-        <Route path="" element={ <Layout /> }>
-          <Route path="/meals" element={ <Recipes /> } />
-          <Route path="/drinks" element={ <Recipes /> } />
-          <Route path="/profile" element={ <Profile /> } />
-          <Route path="/done-recipes" element={ <h1>...</h1> } />
-          <Route path="/favorite-recipes" element={ <h1>...</h1> } />
-        </Route>
-        <Route path="/meals/:id" element={ <RecipeDetails /> } />
-        <Route path="/drinks/:id" element={ <RecipeDetails /> } />
-        <Route path="/meals/:id/in-progress" element={ <h1>...</h1> } />
-        <Route path="/drinks/:id/in-progress" element={ <h1>...</h1> } />
-      </Routes>
-      <Footer />
-    </>
+
+    <Routes>
+      <Route path="/" element={ <Login /> } />
+      <Route path="" element={ <Layout /> }>
+        <Route path="/meals" element={ <Recipes /> } />
+        <Route path="/drinks" element={ <Recipes /> } />
+        <Route path="/profile" element={ <Profile /> } />
+        <Route path="/done-recipes" element={ <h1>...</h1> } />
+        <Route path="/favorite-recipes" element={ <h1>...</h1> } />
+      </Route>
+      <Route path="/meals/:id" element={ <RecipeDetails /> } />
+      <Route path="/drinks/:id" element={ <RecipeDetails /> } />
+      <Route path="/meals/:id/in-progress" element={ <h1>...</h1> } />
+      <Route path="/drinks/:id/in-progress" element={ <h1>...</h1> } />
+    </Routes>
+
   );
 }
 
