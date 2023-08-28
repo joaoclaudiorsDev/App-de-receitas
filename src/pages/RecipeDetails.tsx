@@ -9,10 +9,11 @@ function RecipeDetails() {
   const navigate = useNavigate();
   const { id } = useParams<string>();
   const { pathname } = useLocation();
-  const [mealRecipe, setMealRecipe] = useState<MealType | undefined>();
+  const [mealRecipe, setMealRecipe] = useState<MealType>();
   const [drinkRecipe, setDrinkRecipe] = useState<DrinksType>();
   const [ingredients, setIngredients] = useState<string[]>();
   const [mesures, setMesures] = useState<string[]>();
+  const [isLoaded, setIsLoaded] = useState(true);
 
   const doneRecipesLocal = [{
     id: '178319',
@@ -77,6 +78,7 @@ function RecipeDetails() {
         )).map((mesure) => mesure[1]);
       setMesures(mesuresList as string[]);
     }
+    setIsLoaded(false);
   };
 
   useEffect(() => {
@@ -93,6 +95,7 @@ function RecipeDetails() {
     }, 2000);
   };
 
+  if (isLoaded) return <div>Loading...</div>;
   return (
     <>
       {pathname.includes('meals') && (

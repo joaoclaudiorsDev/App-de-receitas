@@ -20,40 +20,39 @@ function FavoriteButton(favoriteProps: FavoritePorpsType) {
     if (pathname.includes('meals')) {
       setIsFavorite(favoriteRecipes
         .some((recipe: { id: string; }) => recipe.id === mealRecipe?.idMeal));
+      console.log(favoriteRecipes
+        .some((recipe: { id: string; }) => recipe.id === mealRecipe?.idMeal));
     } else {
       setIsFavorite(favoriteRecipes
         .some((recipe: { id: string; }) => recipe.id === drinkRecipe?.idDrink));
     }
   };
 
+  const favRecipesFormat = () => {
+    return {
+      id: pathname.includes('meals') ? mealRecipe?.idMeal : drinkRecipe?.idDrink,
+      type: pathname.includes('meals') ? 'meal' : 'drink',
+      nationality: pathname.includes('meals') ? mealRecipe?.strArea : '',
+      category: pathname
+        .includes('meals') ? mealRecipe?.strCategory : drinkRecipe?.strCategory,
+      alcoholicOrNot: pathname.includes('meals') ? '' : drinkRecipe?.strAlcoholic,
+      name: pathname.includes('meals') ? mealRecipe?.strMeal : drinkRecipe?.strDrink,
+      image: pathname
+        .includes('meals') ? mealRecipe?.strMealThumb : drinkRecipe?.strDrinkThumb,
+    };
+  };
+
   const handleFavorite = () => {
     const favoriteRecipes = JSON.parse(localStorage.getItem('favoriteRecipes') || '[]');
-    if (pathname.includes('meals')) {
-      const mealsFav = {
-        id: mealRecipe?.idMeal,
-        type: 'meal',
-        nationality: mealRecipe?.strArea,
-        category: mealRecipe?.strCategory,
-        alcoholicOrNot: '',
-        name: mealRecipe?.strMeal,
-        image: mealRecipe?.strMealThumb,
-      };
-      favoriteRecipes.push(mealsFav);
+    if (!isFavorite) {
+      favoriteRecipes.push(favRecipesFormat());
       localStorage.setItem('favoriteRecipes', JSON.stringify(favoriteRecipes));
       setIsFavorite(true);
     } else {
-      const drinksFav = {
-        id: drinkRecipe?.idDrink,
-        type: 'drink',
-        nationality: '',
-        category: drinkRecipe?.strCategory,
-        alcoholicOrNot: drinkRecipe?.strAlcoholic,
-        name: drinkRecipe?.strDrink,
-        image: drinkRecipe?.strDrinkThumb,
-      };
-      favoriteRecipes.push(drinksFav);
-      localStorage.setItem('favoriteRecipes', JSON.stringify(favoriteRecipes));
-      setIsFavorite(true);
+      const newFavoriteRecipes = favoriteRecipes
+        .filter((recipe: { id: string; }) => recipe.id !== mealRecipe?.idMeal);
+      localStorage.setItem('favoriteRecipes', JSON.stringify(newFavoriteRecipes));
+      setIsFavorite(false);
     }
   };
 
@@ -72,8 +71,8 @@ function FavoriteButton(favoriteProps: FavoritePorpsType) {
         onClick={ handleFavorite }
       />
       {isFavorite
-        ? <img data-testid="favorite-btn" src={ blackHeartIcon } alt="favorite" />
-        : <img data-testid="favorite-btn" src={ whiteHeartIcon } alt="favorite" />}
+        ? <img data-testid="favorite-btn" src={ blackHeartIcon } alt="full" />
+        : <img data-testid="favorite-btn" src={ whiteHeartIcon } alt="empty" />}
     </label>
   );
 }
