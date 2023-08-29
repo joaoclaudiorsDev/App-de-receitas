@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
-import { DrinksType, MealType } from '../types';
 import styles from './FavoriteButton.module.css';
+import { DrinksType, MealType } from '../types';
 
 type FavoritePorpsType = {
   mealRecipe: MealType | undefined;

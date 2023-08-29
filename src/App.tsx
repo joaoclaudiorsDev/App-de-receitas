@@ -4,6 +4,7 @@ import { Route, Routes } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Layout } from './components/Layout';
 import Recipes from './components/Recipes';
+import DoneRecipes from './components/DoneRecipes';
 import RecipeDetails from './pages/RecipeDetails';
 import Login from './pages/Login';
 import Profile from './pages/Profile';
@@ -17,7 +18,7 @@ function App() {
         <Route path="/meals" element={ <Recipes /> } />
         <Route path="/drinks" element={ <Recipes /> } />
         <Route path="/profile" element={ <Profile /> } />
-        <Route path="/done-recipes" element={ <h1>...</h1> } />
+        <Route path="/done-recipes" element={ <DoneRecipes /> } />
         <Route path="/favorite-recipes" element={ <h1>...</h1> } />
       </Route>
       <Route path="/meals/:id" element={ <RecipeDetails /> } />
