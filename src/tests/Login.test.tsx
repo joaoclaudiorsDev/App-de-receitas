@@ -3,11 +3,11 @@ import userEvent from '@testing-library/user-event';
 import { renderWithRouterAndRedux } from './helpers/RenderWith';
 import App from '../App';
 
-describe('Teste da página de Login.', () => {
+describe('Testing Login page', () => {
   const email = 'exemplo@exemplo.com';
   const password = '1234567';
 
-  test('Verifica se existem os inputs de email, senha e botão de login.', () => {
+  test('Check if the login form is displayed', () => {
     renderWithRouterAndRedux(<App />, { initialEntries: ['/'] });
 
     const emailInput = screen.getByPlaceholderText(/email/i);
@@ -19,7 +19,7 @@ describe('Teste da página de Login.', () => {
     expect(loginButton).toBeInTheDocument();
   });
 
-  test('Verifica se o botão de login é habilitado e desabilitado corretamente.', async () => {
+  test('Check if the login button is disabled', async () => {
     renderWithRouterAndRedux(<App />, { initialEntries: ['/'] });
 
     const emailInput = screen.getByPlaceholderText(/email/i);
@@ -34,7 +34,7 @@ describe('Teste da página de Login.', () => {
     expect(loginButton).toBeEnabled();
   });
 
-  test('Verifica se o e-mail do usuário é salvo no estado global após o login.', async () => {
+  test('Check if the app redirects to the meals page', async () => {
     renderWithRouterAndRedux(<App />, { initialEntries: ['/'] });
 
     const emailInput = screen.getByPlaceholderText(/email/i);
