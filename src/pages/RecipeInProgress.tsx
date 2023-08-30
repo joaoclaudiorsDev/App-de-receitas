@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { fetchDrinkId, fetchMealId } from '../utils/fetchAPI';
 import { DrinksType, MealType, DoneRecipeType } from '../types';
-import styles from './RecipeInProgess.module.css';
 import FavoriteButton from '../components/FavoriteButton';
+import getIngredientsFromLocalStorage from '../tests/helpers/LocalStoreFunction';
+import { Checklist } from '../components/Checklist';
 
 function RecipeInProgess() {
   const navigate = useNavigate();
@@ -14,9 +15,10 @@ function RecipeInProgess() {
   const [ingredients, setIngredients] = useState<string[]>();
   const [mesures, setMesures] = useState<string[]>();
   const [isLoaded, setIsLoaded] = useState(true);
-  const [done, setDone] = useState({} as any);
-  const [allChecked, setAllChecked] = useState(false);
   const [doneRecipes, setDoneRecipes] = useState<DoneRecipeType[]>([]);
+  const [localStoreIngredients, setLocalStoreIngredients] = useState<string[]>(() => {
+    return getIngredientsFromLocalStorage(pathname, id);
+  });
 
   const fetchRecipe = async () => {
     if (pathname.includes('meals')) {
@@ -51,46 +53,45 @@ function RecipeInProgess() {
 
   useEffect(() => {
     fetchRecipe();
-  }, [pathname]);
+  }, [id]);
 
-  const handleCheckboxChange = (position: number) => {
+  useEffect(() => {
+    const localStorageInProgress = JSON
+      .parse(localStorage.getItem('inProgressRecipes') || '{}');
+    if (localStorageInProgress.meals === undefined) {
+      localStorageInProgress.meals = {};
+    }
+    if (localStorageInProgress.drinks === undefined) {
+      localStorageInProgress.drinks = {};
+    }
     if (pathname.includes('meals')) {
-      const updatedCheckedIngredients = {
-        ...done,
-        [position]: !done[position],
-        meals: [id],
-        drinks: done.drinks,
-      };
-      setDone(updatedCheckedIngredients);
-      localStorage
-        .setItem('inProgressRecipes', JSON.stringify(updatedCheckedIngredients));
-      const areAllChecked = ingredients
-        ? ingredients
-          .every((recipe, index) => updatedCheckedIngredients[index]) : false;
-      setAllChecked(areAllChecked);
+      localStorageInProgress.meals[Number(id)] = localStoreIngredients;
     }
     if (pathname.includes('drinks')) {
-      const updatedCheckedIngredients = {
-        ...done,
-        [position]: !done[position],
-        meals: done.meals,
-        drinks: [id],
-      };
-      setDone(updatedCheckedIngredients);
-      localStorage
-        .setItem('inProgressRecipes', JSON.stringify(updatedCheckedIngredients));
-      const areAllChecked = ingredients
-        ? ingredients
-          .every((recipe, index) => updatedCheckedIngredients[index]) : false;
-      setAllChecked(areAllChecked);
+      localStorageInProgress.drinks[Number(id)] = localStoreIngredients;
+    }
+    localStorage.setItem('inProgressRecipes', JSON.stringify(localStorageInProgress));
+  }, [localStoreIngredients, id, pathname]);
+
+  const handleCheckboxChange = (ingredient: string) => {
+    if (pathname.includes('meals')) {
+      setLocalStoreIngredients([...localStoreIngredients, ingredient]);
+    }
+    if (pathname.includes('drinks')) {
+      setLocalStoreIngredients([...localStoreIngredients, ingredient]);
+    }
+    if (localStoreIngredients.includes(ingredient)) {
+      const updatedCheckedIngredients = localStoreIngredients
+        .filter((item) => item !== ingredient);
+      setLocalStoreIngredients(updatedCheckedIngredients);
     }
   };
 
   useEffect(() => {
-    const inProgressRecipes = JSON.parse(localStorage
-      .getItem('inProgressRecipes') || '{}');
-    setDone(inProgressRecipes);
-  }, [pathname]);
+    const localStorageDoneRecipes = JSON
+      .parse(localStorage.getItem('doneRecipes') || '[]');
+    setDoneRecipes(localStorageDoneRecipes);
+  }, []);
 
   const handleClick = () => {
     const recipesFinished = {
@@ -136,24 +137,14 @@ function RecipeInProgess() {
           <p data-testid="recipe-category">{ mealRecipe?.strCategory }</p>
           <ul>
             {ingredients?.map((ingredient, index) => (
-              <li key={ index }>
-                <label
-                  className={ done[index] ? styles.done : '' }
-                  htmlFor={ ingredient }
-                  data-testid={ `${index}-ingredient-step` }
-                >
-                  <input
-                    type="checkbox"
-                    name=""
-                    id={ ingredient }
-                    onChange={ () => handleCheckboxChange(index) }
-                    checked={ done[index] }
-                  />
-                  <span>
-                    {`${ingredient} - ${mesures?.[index]}`}
-                  </span>
-                </label>
-              </li>
+              <Checklist
+                key={ index }
+                ingredient={ ingredient }
+                index={ index }
+                localStoreIngredients={ localStoreIngredients }
+                handleCheckboxChange={ handleCheckboxChange }
+                mesures={ mesures }
+              />
             ))}
           </ul>
           <button
@@ -167,7 +158,7 @@ function RecipeInProgess() {
           <button
             type="button"
             onClick={ handleClick }
-            disabled={ !allChecked }
+            disabled={ localStoreIngredients.length !== ingredients?.length }
             data-testid="finish-recipe-btn"
           >
             Finish recipe
@@ -192,24 +183,14 @@ function RecipeInProgess() {
           <h1 data-testid="recipe-title">{ drinkRecipe?.strDrink }</h1>
           <ul>
             {ingredients?.map((ingredient, index) => (
-              <li key={ index }>
-                <label
-                  className={ done[index] ? styles.done : '' }
-                  htmlFor={ ingredient }
-                  data-testid={ `${index}-ingredient-step` }
-                >
-                  <input
-                    type="checkbox"
-                    name=""
-                    id={ ingredient }
-                    onChange={ () => handleCheckboxChange(index) }
-                    checked={ done[index] }
-                  />
-                  <span>
-                    {`${ingredient} - ${mesures?.[index]}`}
-                  </span>
-                </label>
-              </li>
+              <Checklist
+                key={ index }
+                ingredient={ ingredient }
+                index={ index }
+                localStoreIngredients={ localStoreIngredients }
+                handleCheckboxChange={ handleCheckboxChange }
+                mesures={ mesures }
+              />
             ))}
           </ul>
           <button
@@ -223,7 +204,7 @@ function RecipeInProgess() {
           <button
             type="button"
             onClick={ handleClick }
-            disabled={ !allChecked }
+            disabled={ localStoreIngredients.length !== ingredients?.length }
             data-testid="finish-recipe-btn"
           >
             Finish recipe
