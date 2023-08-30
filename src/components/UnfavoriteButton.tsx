@@ -1,19 +1,18 @@
-import { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
 import styles from './FavoriteButton.module.css';
 import { DrinksType, MealType } from '../types';
 
-type FavoritePorpsType = {
+type UnfavoritePropsType = {
   mealRecipe: MealType | undefined;
   drinkRecipe: DrinksType | undefined;
   index: number;
 };
 
-function FavoriteButton(favoriteProps: FavoritePorpsType) {
-  const { mealRecipe, drinkRecipe } = favoriteProps;
-  const [isFavorite, setIsFavorite] = useState(false);
+function UnfavoriteButton(unfavoriteProps: UnfavoritePropsType) {
+  const { mealRecipe, drinkRecipe, index, onUnfavorite } = unfavoriteProps;
+  const [isFavorite, setIsFavorite] = useState(true); // Inicia como favoritado
   const { pathname } = useLocation();
 
   const checkFavorite = () => {
@@ -43,40 +42,43 @@ function FavoriteButton(favoriteProps: FavoritePorpsType) {
     };
   };
 
-  const handleFavorite = () => {
+  const handleUnfavorite = () => {
     const favoriteRecipes = JSON.parse(localStorage.getItem('favoriteRecipes') || '[]');
     if (!isFavorite) {
       favoriteRecipes.push(favRecipesFormat());
       localStorage.setItem('favoriteRecipes', JSON.stringify(favoriteRecipes));
       setIsFavorite(true);
+      onUnfavorite();
     } else {
       const newFavoriteRecipes = favoriteRecipes
         .filter((recipe: { id: string; }) => recipe.id !== mealRecipe?.idMeal);
       localStorage.setItem('favoriteRecipes', JSON.stringify(newFavoriteRecipes));
       setIsFavorite(false);
+      onUnfavorite();
     }
   };
 
   useEffect(() => {
     checkFavorite();
-    console.log(JSON.parse(localStorage.getItem('favoriteRecipes') || '[]'));
   }, [pathname]);
 
   return (
     <label
-      htmlFor="favorite"
+      htmlFor={ `unfavorite-${index}` }
     >
       <input
         className={ styles.favoriteButton }
         type="checkbox"
-        id="favorite"
-        onClick={ handleFavorite }
+        id={ `unfavorite-${index}` }
+        onClick={ handleUnfavorite }
       />
-      {isFavorite
-        ? <img data-testid="favorite-btn" src={ blackHeartIcon } alt="full" />
-        : <img data-testid="favorite-btn" src={ whiteHeartIcon } alt="empty" />}
+      <img
+        data-testid={ `${index}-horizontal-favorite-btn` }
+        src={ blackHeartIcon }
+        alt="unfavorite"
+      />
     </label>
   );
 }
 
-export default FavoriteButton;
+export default UnfavoriteButton;
