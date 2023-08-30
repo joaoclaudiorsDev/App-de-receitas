@@ -99,8 +99,8 @@ describe('RecipeInProgess', () => {
     const firstIngredient = await screen.findByText('soy sauce - 3/4 cup');
     const shareButton = await screen.findByRole('button', { name: /share/i });
 
-    expect(ImgAltText).toBeInTheDocument();
     expect(recipeTitle).toBeInTheDocument();
+    expect(ImgAltText).toBeInTheDocument();
     expect(firstIngredient).toBeInTheDocument();
     expect(shareButton).toBeInTheDocument();
 
