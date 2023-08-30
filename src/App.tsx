@@ -7,15 +7,17 @@ import Recipes from './components/Recipes';
 import DoneRecipes from './components/DoneRecipes';
 import RecipeDetails from './pages/RecipeDetails';
 import Login from './pages/Login';
+import Profile from './pages/Profile';
 
 function App() {
   return (
+
     <Routes>
       <Route path="/" element={ <Login /> } />
       <Route path="" element={ <Layout /> }>
         <Route path="/meals" element={ <Recipes /> } />
         <Route path="/drinks" element={ <Recipes /> } />
-        <Route path="/profile" element={ <h1>...</h1> } />
+        <Route path="/profile" element={ <Profile /> } />
         <Route path="/done-recipes" element={ <DoneRecipes /> } />
         <Route path="/favorite-recipes" element={ <h1>...</h1> } />
       </Route>
@@ -24,6 +26,7 @@ function App() {
       <Route path="/meals/:id/in-progress" element={ <h1>...</h1> } />
       <Route path="/drinks/:id/in-progress" element={ <h1>...</h1> } />
     </Routes>
+
   );
 }
 
