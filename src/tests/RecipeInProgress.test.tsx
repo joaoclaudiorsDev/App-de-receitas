@@ -178,10 +178,10 @@ describe('RecipeInProgess', () => {
 
     const ingredient1 = await screen.findByTestId('0-ingredient-step');
 
-    expect(ingredient1).toHaveStyle('text-decoration: line-through solid rgb(0, 0, 0)');
+    expect(ingredient1).toHaveStyle('text-decoration: line-through solid black');
 
     await userEvent.click(ingredient1);
 
-    expect(ingredient1).not.toHaveStyle('text-decoration: line-through solid rgb(0, 0, 0)');
+    expect(ingredient1).not.toHaveStyle('text-decoration: line-through solid black');
   });
 });
