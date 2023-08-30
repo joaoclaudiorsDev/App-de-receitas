@@ -15,6 +15,7 @@ function RecipeInProgess() {
   const [ingredients, setIngredients] = useState<string[]>();
   const [mesures, setMesures] = useState<string[]>();
   const [isLoaded, setIsLoaded] = useState(true);
+  const [linkCopied, setLinkCopied] = useState(false);
   const [doneRecipes, setDoneRecipes] = useState<DoneRecipeType[]>([]);
   const [localStoreIngredients, setLocalStoreIngredients] = useState<string[]>(() => {
     return getIngredientsFromLocalStorage(pathname, id);
@@ -74,12 +75,7 @@ function RecipeInProgess() {
   }, [localStoreIngredients, id, pathname]);
 
   const handleCheckboxChange = (ingredient: string) => {
-    if (pathname.includes('meals')) {
-      setLocalStoreIngredients([...localStoreIngredients, ingredient]);
-    }
-    if (pathname.includes('drinks')) {
-      setLocalStoreIngredients([...localStoreIngredients, ingredient]);
-    }
+    setLocalStoreIngredients([...localStoreIngredients, ingredient]);
     if (localStoreIngredients.includes(ingredient)) {
       const updatedCheckedIngredients = localStoreIngredients
         .filter((item) => item !== ingredient);
@@ -114,13 +110,8 @@ function RecipeInProgess() {
   };
 
   const handleShare = () => {
+    setLinkCopied(!linkCopied);
     navigator.clipboard.writeText(`http://localhost:3000/${mealRecipe?.idMeal ? 'meals' : 'drinks'}/${mealRecipe?.idMeal ? `${mealRecipe.idMeal}` : `${drinkRecipe?.idDrink}`}`);
-    const alert = document.createElement('div');
-    alert.innerHTML = 'Link copied!';
-    document.body.appendChild(alert);
-    setTimeout(() => {
-      document.body.removeChild(alert);
-    }, 2000);
   };
 
   if (isLoaded) return <div>Loading...</div>;
@@ -163,6 +154,7 @@ function RecipeInProgess() {
           >
             Finish recipe
           </button>
+          <p hidden={ !linkCopied }>Link copied!</p>
           <p data-testid="instructions">{ mealRecipe?.strInstructions }</p>
           <iframe
             data-testid="video"
@@ -209,6 +201,7 @@ function RecipeInProgess() {
           >
             Finish recipe
           </button>
+          <p hidden={ !linkCopied }>Link copied!</p>
           <p data-testid="recipe-category">{ drinkRecipe?.strAlcoholic }</p>
           <p data-testid="instructions">{ drinkRecipe?.strInstructions }</p>
         </div>
