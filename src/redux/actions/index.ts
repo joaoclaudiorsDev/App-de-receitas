@@ -1,4 +1,4 @@
-import { CategoryType, Dispatch, Drink, DrinksType, Meal, MealType } from '../../types';
+import { CategoryType, Dispatch, DrinksType, MealType } from '../../types';
 
 export const SAVE_USER = 'SAVE_USER';
 export const SAVE_RECIPES_MEALS = 'SAVE_RECIPES_MEALS';
@@ -6,25 +6,10 @@ export const SAVE_RECIPES_DRINKS = 'SAVE_RECIPES_DRINKS';
 export const SAVE_CATEGORIES_DRINKS = 'SAVE_CATEGORIES_DRINKS';
 export const SAVE_CATEGORIES_MEALS = 'SAVE_CATEGORIES_MEALS';
 
-export const actionCreator = (payload: string) => ({
-  type: SAVE_USER,
-  payload,
-});
-
 export const createUser = (payload: string) => ({
   type: SAVE_USER,
   payload,
 });
-
-// export const createDrinkRecipes = (drinks: Drink[] | void) => ({
-//   type: SAVE_DRINK_RECIPES,
-//   payload: drinks,
-// });
-
-// export const createMealRecipes = (meals: Meal[] | void) => ({
-//   type: SAVE_MEAL_RECIPES,
-//   payload: meals,
-// });
 
 export const saveRecipesMeals = (payload: MealType[]) => {
   return {
