@@ -8,6 +8,8 @@ import DoneRecipes from './components/DoneRecipes';
 import RecipeDetails from './pages/RecipeDetails';
 import Login from './pages/Login';
 import FavoriteRecipes from './pages/FavoriteRecipes';
+import Profile from './pages/Profile';
+import RecipeInProgess from './pages/RecipeInProgress';
 
 function App() {
   return (
@@ -16,14 +18,14 @@ function App() {
       <Route path="" element={ <Layout /> }>
         <Route path="/meals" element={ <Recipes /> } />
         <Route path="/drinks" element={ <Recipes /> } />
-        <Route path="/profile" element={ <h1>...</h1> } />
+        <Route path="/profile" element={ <Profile /> } />
         <Route path="/done-recipes" element={ <DoneRecipes /> } />
         <Route path="/favorite-recipes" element={ <FavoriteRecipes /> } />
       </Route>
       <Route path="/meals/:id" element={ <RecipeDetails /> } />
       <Route path="/drinks/:id" element={ <RecipeDetails /> } />
-      <Route path="/meals/:id/in-progress" element={ <h1>...</h1> } />
-      <Route path="/drinks/:id/in-progress" element={ <h1>...</h1> } />
+      <Route path="/meals/:id/in-progress" element={ <RecipeInProgess /> } />
+      <Route path="/drinks/:id/in-progress" element={ <RecipeInProgess /> } />
     </Routes>
   );
 }

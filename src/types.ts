@@ -168,13 +168,13 @@ export type RecommendationType = {
 };
 
 export type DoneRecipeType = {
-  id: string;
+  id: string | undefined;
   type: string;
   nationality: string;
-  category: string;
+  category: string | undefined;
   alcoholicOrNot: string;
-  name: string;
-  image: string;
+  name: string | undefined;
+  image: string | undefined;
   doneDate: string;
   tags: string[];
 };
