@@ -50,7 +50,9 @@ function FavoriteButton(favoriteProps: FavoritePorpsType) {
       setIsFavorite(true);
     } else {
       const newFavoriteRecipes = favoriteRecipes
-        .filter((recipe: { id: string; }) => recipe.id !== mealRecipe?.idMeal);
+        .filter((recipe: { id: string; }) => (
+          recipe.id !== drinkRecipe?.idDrink && recipe.id !== mealRecipe?.idMeal
+        ));
       localStorage.setItem('favoriteRecipes', JSON.stringify(newFavoriteRecipes));
       setIsFavorite(false);
     }

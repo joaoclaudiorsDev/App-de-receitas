@@ -8,10 +8,10 @@ import DoneRecipes from './components/DoneRecipes';
 import RecipeDetails from './pages/RecipeDetails';
 import Login from './pages/Login';
 import Profile from './pages/Profile';
+import RecipeInProgess from './pages/RecipeInProgress';
 
 function App() {
   return (
-
     <Routes>
       <Route path="/" element={ <Login /> } />
       <Route path="" element={ <Layout /> }>
@@ -23,10 +23,9 @@ function App() {
       </Route>
       <Route path="/meals/:id" element={ <RecipeDetails /> } />
       <Route path="/drinks/:id" element={ <RecipeDetails /> } />
-      <Route path="/meals/:id/in-progress" element={ <h1>...</h1> } />
-      <Route path="/drinks/:id/in-progress" element={ <h1>...</h1> } />
+      <Route path="/meals/:id/in-progress" element={ <RecipeInProgess /> } />
+      <Route path="/drinks/:id/in-progress" element={ <RecipeInProgess /> } />
     </Routes>
-
   );
 }
 
