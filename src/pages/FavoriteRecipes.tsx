@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { DoneRecipeType, DrinksType, MealType } from '../types';
 import ParagraphComponent from '../components/ParagraphComponent';
 import UnfavoriteButton from '../components/UnfavoriteButton';
 import shareIcon from '../images/shareIcon.svg';
+import styles from './FavoriteRecipes.module.css';
 
 function FavoriteRecipes() {
   const [favoriteRecipes, setFavoriteRecipes] = useState<DoneRecipeType[]>([]);
+  const { pathname } = useLocation();
 
   useEffect(() => {
     const favoriteRecipesFromStorage = JSON
@@ -14,13 +16,26 @@ function FavoriteRecipes() {
     setFavoriteRecipes(favoriteRecipesFromStorage);
   }, []);
 
-  const handleUnfavorite = (indexToRemove: any) => {
+  const handleUnfavorite = (indexToRemove: number) => {
     const updatedFavoriteRecipes = favoriteRecipes
       .filter((_, index) => index !== indexToRemove);
+    localStorage.setItem('favoriteRecipes', JSON.stringify(updatedFavoriteRecipes));
     setFavoriteRecipes(updatedFavoriteRecipes);
   };
+
+  const handleShare = (recipeURL: string) => {
+    navigator.clipboard.writeText(recipeURL);
+    const alert = document.createElement('div');
+    alert.innerHTML = 'Link copied!';
+    document.body.appendChild(alert);
+    console.log('clicou');
+    setTimeout(() => {
+      document.body.removeChild(alert);
+    }, 2000);
+  };
+
   return (
-    <div>
+    <div className={ styles.mainFavoriteDiv }>
       <button
         type="button"
         data-testid="filter-by-all-btn"
@@ -52,7 +67,14 @@ function FavoriteRecipes() {
           </Link>
           <ParagraphComponent index={ index } recipe={ recipe } />
 
-          <button type="button">
+          <button
+            type="button"
+            onClick={ () => handleShare(
+              `${
+                window.location.origin
+              }/${recipe.type}s/${recipe.id}`,
+            ) }
+          >
             <img
               src={ shareIcon }
               alt="share button"
@@ -60,8 +82,8 @@ function FavoriteRecipes() {
             />
           </button>
           <UnfavoriteButton
-            mealRecipe={ recipe as MealType }
-            drinkRecipe={ recipe as DrinksType }
+            mealRecipe={ recipe as unknown as MealType }
+            drinkRecipe={ recipe as unknown as DrinksType }
             index={ index }
             onUnfavorite={ () => handleUnfavorite(index) }
           />

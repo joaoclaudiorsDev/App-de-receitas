@@ -4,15 +4,16 @@ import blackHeartIcon from '../images/blackHeartIcon.svg';
 import styles from './FavoriteButton.module.css';
 import { DrinksType, MealType } from '../types';
 
-type UnfavoritePropsType = {
+type FavoritePropsType = {
   mealRecipe: MealType | undefined;
   drinkRecipe: DrinksType | undefined;
   index: number;
+  onUnfavorite: () => void;
 };
 
-function UnfavoriteButton(unfavoriteProps: UnfavoritePropsType) {
-  const { mealRecipe, drinkRecipe, index, onUnfavorite } = unfavoriteProps;
-  const [isFavorite, setIsFavorite] = useState(true); // Inicia como favoritado
+function UnfavoriteButton(favoriteProps: FavoritePropsType) {
+  const { mealRecipe, drinkRecipe, index, onUnfavorite } = favoriteProps;
+  const [isFavorite, setIsFavorite] = useState(false);
   const { pathname } = useLocation();
 
   const checkFavorite = () => {
@@ -20,42 +21,21 @@ function UnfavoriteButton(unfavoriteProps: UnfavoritePropsType) {
     if (pathname.includes('meals')) {
       setIsFavorite(favoriteRecipes
         .some((recipe: { id: string; }) => recipe.id === mealRecipe?.idMeal));
-      console.log(favoriteRecipes
-        .some((recipe: { id: string; }) => recipe.id === mealRecipe?.idMeal));
     } else {
       setIsFavorite(favoriteRecipes
         .some((recipe: { id: string; }) => recipe.id === drinkRecipe?.idDrink));
     }
   };
 
-  const favRecipesFormat = () => {
-    return {
-      id: pathname.includes('meals') ? mealRecipe?.idMeal : drinkRecipe?.idDrink,
-      type: pathname.includes('meals') ? 'meal' : 'drink',
-      nationality: pathname.includes('meals') ? mealRecipe?.strArea : '',
-      category: pathname
-        .includes('meals') ? mealRecipe?.strCategory : drinkRecipe?.strCategory,
-      alcoholicOrNot: pathname.includes('meals') ? '' : drinkRecipe?.strAlcoholic,
-      name: pathname.includes('meals') ? mealRecipe?.strMeal : drinkRecipe?.strDrink,
-      image: pathname
-        .includes('meals') ? mealRecipe?.strMealThumb : drinkRecipe?.strDrinkThumb,
-    };
-  };
-
   const handleUnfavorite = () => {
     const favoriteRecipes = JSON.parse(localStorage.getItem('favoriteRecipes') || '[]');
-    if (!isFavorite) {
-      favoriteRecipes.push(favRecipesFormat());
-      localStorage.setItem('favoriteRecipes', JSON.stringify(favoriteRecipes));
-      setIsFavorite(true);
-      onUnfavorite();
-    } else {
-      const newFavoriteRecipes = favoriteRecipes
-        .filter((recipe: { id: string; }) => recipe.id !== mealRecipe?.idMeal);
-      localStorage.setItem('favoriteRecipes', JSON.stringify(newFavoriteRecipes));
-      setIsFavorite(false);
-      onUnfavorite();
-    }
+
+    const newFavoriteRecipes = favoriteRecipes
+      .filter((recipe: { id: string; }) => recipe.id !== (pathname
+        .includes('meals') ? mealRecipe?.idMeal : drinkRecipe?.idDrink));
+
+    localStorage.setItem('favoriteRecipes', JSON.stringify(newFavoriteRecipes));
+    onUnfavorite();
   };
 
   useEffect(() => {
@@ -70,7 +50,8 @@ function UnfavoriteButton(unfavoriteProps: UnfavoritePropsType) {
         className={ styles.favoriteButton }
         type="checkbox"
         id={ `unfavorite-${index}` }
-        onClick={ handleUnfavorite }
+        checked={ isFavorite }
+        onChange={ handleUnfavorite }
       />
       <img
         data-testid={ `${index}-horizontal-favorite-btn` }
