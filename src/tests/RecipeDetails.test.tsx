@@ -5,6 +5,8 @@ import App from '../App';
 import { renderWithRouterAndRedux } from './helpers/RenderWith';
 import { detailsMockDrinks, detailsMockMeals } from './mocks/DetailsMock';
 
+const MEAL_ENTRIES = ['/meals/52772'];
+
 describe('RecipeDetails', () => {
   afterEach(() => {
     vi.clearAllMocks();
@@ -14,7 +16,7 @@ describe('RecipeDetails', () => {
       json: async () => (detailsMockMeals),
     });
 
-    renderWithRouterAndRedux(<App />, { initialEntries: ['/meals/52772'] });
+    renderWithRouterAndRedux(<App />, { initialEntries: MEAL_ENTRIES });
     expect(global.fetch).toHaveBeenCalled();
 
     const ImgAltText = await screen.findByAltText('Teriyaki Chicken Casserole');
@@ -70,18 +72,15 @@ describe('RecipeDetails', () => {
       json: async () => (detailsMockMeals),
     });
 
-    renderWithRouterAndRedux(<App />, { initialEntries: ['/meals/52772'] });
+    renderWithRouterAndRedux(<App />, { initialEntries: MEAL_ENTRIES });
     expect(global.fetch).toHaveBeenCalled();
 
     const startButton = await screen.findByTestId('start-recipe-btn');
     expect(startButton).toBeInTheDocument();
 
     await userEvent.click(startButton);
-
-    // const path = window.location.pathname;
-    // expect(path).toBe('/meals/52772/in-progress');
   });
-  test('test favorite button', async () => {
+  test('test favorite button Drink', async () => {
     global.fetch = vi.fn().mockResolvedValue({
       json: async () => (detailsMockDrinks),
     });
@@ -89,6 +88,28 @@ describe('RecipeDetails', () => {
     renderWithRouterAndRedux(<App />, { initialEntries: ['/drinks/178319'] });
     expect(global.fetch).toHaveBeenCalled();
 
+    const localStorageMock = vi.spyOn(Storage.prototype, 'setItem');
+    const favoriteButton = await screen.findByTestId(/favorite-btn/i);
+    expect(favoriteButton).toBeInTheDocument();
+    expect(favoriteButton).toHaveAttribute('alt', 'empty');
+
+    await userEvent.click(favoriteButton);
+
+    expect(favoriteButton).toHaveAttribute('alt', 'full');
+    expect(localStorageMock).toHaveBeenCalled();
+
+    await userEvent.click(favoriteButton);
+
+    expect(favoriteButton).toHaveAttribute('alt', 'empty');
+    expect(localStorageMock).toHaveBeenCalled();
+  });
+  test('test favorite button Meal', async () => {
+    global.fetch = vi.fn().mockResolvedValue({
+      json: async () => (detailsMockMeals),
+    });
+
+    renderWithRouterAndRedux(<App />, { initialEntries: MEAL_ENTRIES });
+    expect(global.fetch).toHaveBeenCalled();
     const localStorageMock = vi.spyOn(Storage.prototype, 'setItem');
     const favoriteButton = await screen.findByTestId(/favorite-btn/i);
     expect(favoriteButton).toBeInTheDocument();

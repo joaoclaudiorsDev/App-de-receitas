@@ -5,7 +5,7 @@ import { renderWithRouterAndRedux } from './helpers/RenderWith';
 
 describe('testing Footer component', () => {
   test('testing Footer elements', async () => {
-    renderWithRouterAndRedux(<App />);
+    renderWithRouterAndRedux(<App />, { initialEntries: ['/meals'] });
 
     const footerElement = screen.getByTestId('footer');
     const mealsButton = screen.getByTestId('meals-bottom-btn');
@@ -19,9 +19,9 @@ describe('testing Footer component', () => {
   });
 
   test('clicking on drinks button navigates to drinks page', async () => {
-    renderWithRouterAndRedux(<App />);
+    renderWithRouterAndRedux(<App />, { initialEntries: ['/meals'] });
 
-    const mealsButton = screen.getByTestId('drinks-bottom-btn');
+    const mealsButton = await screen.findByTestId('drinks-bottom-btn');
     userEvent.click(mealsButton);
 
     const pageTitleText = 'Drinks';
@@ -33,7 +33,7 @@ describe('testing Footer component', () => {
   });
 
   test('clicking on drinks button navigates to meals page', async () => {
-    renderWithRouterAndRedux(<App />);
+    renderWithRouterAndRedux(<App />, { initialEntries: ['/meals'] });
 
     const mealsButton = screen.getByTestId('meals-bottom-btn');
     userEvent.click(mealsButton);
@@ -47,7 +47,7 @@ describe('testing Footer component', () => {
   });
 
   test('Footer is fixed to the bottom of the page', () => {
-    const { getByTestId } = renderWithRouterAndRedux(<App />);
+    const { getByTestId } = renderWithRouterAndRedux(<App />, { initialEntries: ['/meals'] });
 
     const footerElement = getByTestId('footer');
     const footerStyles = window.getComputedStyle(footerElement);
