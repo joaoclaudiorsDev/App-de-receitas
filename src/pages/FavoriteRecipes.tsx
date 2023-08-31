@@ -9,6 +9,7 @@ import styles from './FavoriteRecipes.module.css';
 function FavoriteRecipes() {
   const [favoriteRecipes, setFavoriteRecipes] = useState<DoneRecipeType[]>([]);
   const { pathname } = useLocation();
+  const [filterType, setFilterType] = useState<string>('all');
 
   useEffect(() => {
     const favoriteRecipesFromStorage = JSON
@@ -34,27 +35,43 @@ function FavoriteRecipes() {
     }, 2000);
   };
 
+  const filteredRecipes = favoriteRecipes.filter((recipe) => {
+    if (filterType === 'all') {
+      return true;
+    }
+    if (filterType === 'meals') {
+      return recipe.type === 'meal';
+    }
+    if (filterType === 'drinks') {
+      return recipe.type === 'drink';
+    }
+    return false;
+  });
+
   return (
     <div className={ styles.mainFavoriteDiv }>
       <button
         type="button"
         data-testid="filter-by-all-btn"
+        onClick={ () => setFilterType('all') }
       >
         All
       </button>
       <button
         type="button"
+        onClick={ () => setFilterType('meals') }
         data-testid="filter-by-meal-btn"
       >
         Meals
       </button>
       <button
         type="button"
+        onClick={ () => setFilterType('drinks') }
         data-testid="filter-by-drink-btn"
       >
         Drinks
       </button>
-      {favoriteRecipes.map((recipe, index) => (
+      {filteredRecipes.map((recipe, index) => (
         <div key={ index }>
           <Link to={ `/${recipe.type}s/${recipe.id}` }>
             <h3 data-testid={ `${index}-horizontal-name` }>{recipe.name}</h3>
