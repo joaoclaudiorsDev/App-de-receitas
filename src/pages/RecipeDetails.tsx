@@ -138,7 +138,7 @@ function RecipeDetails() {
       >
         Share
       </button>
-      <FavoriteButton mealRecipe={ mealRecipe } drinkRecipe={ drinkRecipe } />
+      <FavoriteButton mealRecipe={ mealRecipe } drinkRecipe={ drinkRecipe } index={ 0 } />
       <h2>Recommended</h2>
       <RecommendationCard />
       <div style={ { position: 'fixed', bottom: '0' } }>

@@ -8,6 +8,7 @@ import { DrinksType, MealType } from '../types';
 type FavoritePorpsType = {
   mealRecipe: MealType | undefined;
   drinkRecipe: DrinksType | undefined;
+  index: number;
 };
 
 function FavoriteButton(favoriteProps: FavoritePorpsType) {
