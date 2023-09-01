@@ -1,28 +1,28 @@
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { vi } from 'vitest';
 import App from '../App';
 import { renderWithRouterAndRedux } from './helpers/RenderWith';
+import { mealsMock } from './mocks/Meals';
+import { drinksMock } from './mocks/Drinks';
 
 describe('testing Footer component', () => {
-  test('testing Footer elements', async () => {
-    renderWithRouterAndRedux(<App />);
-
-    const footerElement = screen.getByTestId('footer');
-    const mealsButton = screen.getByTestId('meals-bottom-btn');
-    const drinksButton = screen.getByTestId('drinks-bottom-btn');
-
-    expect(footerElement).toBeInTheDocument();
-    expect(drinksButton).toBeInTheDocument();
-    expect(mealsButton).toBeInTheDocument();
-    expect(drinksButton.closest('a')).toHaveAttribute('href', '/drinks');
-    expect(mealsButton.closest('a')).toHaveAttribute('href', '/meals');
+  afterEach(() => {
+    vi.clearAllMocks();
   });
-
   test('clicking on drinks button navigates to drinks page', async () => {
-    renderWithRouterAndRedux(<App />);
+    global.fetch = vi.fn().mockResolvedValue({
+      json: async () => (mealsMock),
+    });
+    renderWithRouterAndRedux(<App />, { initialEntries: ['/meals'] });
 
-    const mealsButton = screen.getByTestId('drinks-bottom-btn');
-    userEvent.click(mealsButton);
+    vi.clearAllMocks();
+    global.fetch = vi.fn().mockResolvedValue({
+      json: async () => (drinksMock),
+    });
+
+    const drinksButton = await screen.findByTestId('drinks-bottom-btn');
+    userEvent.click(drinksButton);
 
     const pageTitleText = 'Drinks';
 
@@ -32,8 +32,17 @@ describe('testing Footer component', () => {
     expect(pageTitle).toBeInTheDocument();
   });
 
-  test('clicking on drinks button navigates to meals page', async () => {
-    renderWithRouterAndRedux(<App />);
+  test('clicking on meals button navigates to meals page', async () => {
+    global.fetch = vi.fn().mockResolvedValue({
+      json: async () => (drinksMock),
+    });
+    renderWithRouterAndRedux(<App />, { initialEntries: ['/drinks'] });
+
+    vi.clearAllMocks();
+
+    global.fetch = vi.fn().mockResolvedValue({
+      json: async () => (mealsMock),
+    });
 
     const mealsButton = screen.getByTestId('meals-bottom-btn');
     userEvent.click(mealsButton);
@@ -47,7 +56,10 @@ describe('testing Footer component', () => {
   });
 
   test('Footer is fixed to the bottom of the page', () => {
-    const { getByTestId } = renderWithRouterAndRedux(<App />);
+    global.fetch = vi.fn().mockResolvedValue({
+      json: async () => (mealsMock),
+    });
+    const { getByTestId } = renderWithRouterAndRedux(<App />, { initialEntries: ['/meals'] });
 
     const footerElement = getByTestId('footer');
     const footerStyles = window.getComputedStyle(footerElement);

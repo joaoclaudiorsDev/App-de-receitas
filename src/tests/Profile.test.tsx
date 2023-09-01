@@ -1,12 +1,17 @@
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { vi } from 'vitest';
 import App from '../App';
 import { renderWithRouterAndRedux } from './helpers/RenderWith';
+import { mealsMock } from './mocks/Meals';
 
 describe('Testing Profile page.', () => {
   const userEmail = 'exemplo@exemplo.com';
 
   test('Checks if the users email is being rendered and saved in the global state', async () => {
+    global.fetch = vi.fn().mockResolvedValue({
+      json: async () => (mealsMock),
+    });
     const { store } = renderWithRouterAndRedux(<App />, { initialEntries: ['/'] });
 
     const emailInput = screen.getByPlaceholderText(/email/i);

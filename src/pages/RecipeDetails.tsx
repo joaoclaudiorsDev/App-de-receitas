@@ -14,41 +14,7 @@ function RecipeDetails() {
   const [ingredients, setIngredients] = useState<string[]>();
   const [mesures, setMesures] = useState<string[]>();
   const [isLoaded, setIsLoaded] = useState(true);
-
-  const doneRecipesLocal = [{
-    id: '178319',
-    type: 'drink',
-    nationality: '',
-    category: 'Cocktail',
-    alcoholicOrNot: 'Alcoholic',
-    name: 'Aquamarine',
-    image: 'https://www.thecocktaildb.com/images/media/drink/zvsre31572902738.jpg',
-    doneDate: '23/6/2020',
-    tags: [],
-  },
-  {
-    id: '52771',
-    type: 'meal',
-    nationality: 'Italian',
-    category: 'Vegetarian',
-    alcoholicOrNot: '',
-    name: 'Spicy Arrabiata Penne',
-    image: 'https://www.themealdb.com/images/media/meals/ustsqw1468250014.jpg',
-    doneDate: '22/6/2020',
-    tags: ['Pasta', 'Curry'],
-  }];
-  localStorage.setItem('doneRecipes', JSON.stringify(doneRecipesLocal));
-  const doneRecipes = JSON.parse(localStorage.getItem('doneRecipes') || '[]');
-  const recipesInProgress = {
-    meals: {
-      52771: [],
-    },
-    drinks: {
-      178319: [],
-    },
-  };
-  localStorage.setItem('inProgressRecipes', JSON.stringify(recipesInProgress));
-  const inProgressRecipes = JSON.parse(localStorage.getItem('inProgressRecipes') || '{}');
+  const [isInProgress, setIsInProgress] = useState(false);
 
   const fetchRecipe = async () => {
     if (pathname.includes('meals')) {
@@ -81,8 +47,24 @@ function RecipeDetails() {
     setIsLoaded(false);
   };
 
+  const verifyButton = () => {
+    const inProgressRecipes = localStorage
+      .getItem('inProgressRecipes');
+    if (inProgressRecipes) {
+      const inProgressRecipesObj = JSON.parse(inProgressRecipes);
+      if (pathname.includes('meals')) {
+        if (inProgressRecipesObj.meals[id as string]) {
+          setIsInProgress(true);
+        }
+      } else if (inProgressRecipesObj.drinks[id as string]) {
+        setIsInProgress(true);
+      }
+    }
+  };
+
   useEffect(() => {
     fetchRecipe();
+    verifyButton();
   }, [id]);
 
   const handleShare = () => {
@@ -159,34 +141,15 @@ function RecipeDetails() {
       <FavoriteButton mealRecipe={ mealRecipe } drinkRecipe={ drinkRecipe } index={ 0 } />
       <h2>Recommended</h2>
       <RecommendationCard />
-      {!(pathname.includes('meals')
-        ? inProgressRecipes.meals[id as string] === id
-        : inProgressRecipes.drinks[id as string] === id)
-          && !doneRecipes.some((recipe: { id: string; }) => recipe.id === id) && (
-            <div style={ { position: 'fixed', bottom: '0' } }>
-              <button
-                data-testid="start-recipe-btn"
-                style={ { position: 'fixed', bottom: '0' } }
-                onClick={ () => navigate(`${pathname}/in-progress`) }
-              >
-                Start Recipe
-              </button>
-            </div>
-      )}
-      {(pathname.includes('meals')
-        ? Object.keys(inProgressRecipes.meals).some((idDone) => idDone === id)
-        : Object.keys(inProgressRecipes.drinks).some((idDone) => idDone === id))
-        && doneRecipes.some((recipe: { id: string; }) => recipe.id === id) && (
-          <div style={ { position: 'fixed', bottom: '0' } }>
-            <button
-              style={ { position: 'fixed', bottom: '0' } }
-              data-testid="start-recipe-btn"
-              onClick={ () => navigate(`${pathname}/in-progress`) }
-            >
-              Continue Recipe
-            </button>
-          </div>
-      )}
+      <div style={ { position: 'fixed', bottom: '0' } }>
+        <button
+          data-testid="start-recipe-btn"
+          style={ { position: 'fixed', bottom: '0' } }
+          onClick={ () => navigate(`${pathname}/in-progress`) }
+        >
+          {isInProgress ? 'Continue Recipe' : 'Start Recipe'}
+        </button>
+      </div>
     </>
   );
 }

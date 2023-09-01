@@ -1,11 +1,16 @@
 import { screen } from '@testing-library/dom';
+import { vi } from 'vitest';
 import userEvent from '@testing-library/user-event';
 import { renderWithRouterAndRedux } from './helpers/RenderWith';
 import App from '../App';
+import { mealsMock } from './mocks/Meals';
 
 describe('Testing Login page', () => {
   const email = 'exemplo@exemplo.com';
   const password = '1234567';
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
 
   test('Check if the login form is displayed', () => {
     renderWithRouterAndRedux(<App />, { initialEntries: ['/'] });
@@ -35,6 +40,9 @@ describe('Testing Login page', () => {
   });
 
   test('Check if the app redirects to the meals page', async () => {
+    global.fetch = vi.fn().mockResolvedValue({
+      json: async () => (mealsMock),
+    });
     renderWithRouterAndRedux(<App />, { initialEntries: ['/'] });
 
     const emailInput = screen.getByPlaceholderText(/email/i);

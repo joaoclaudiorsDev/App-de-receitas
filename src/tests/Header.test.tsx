@@ -1,10 +1,19 @@
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { vi } from 'vitest';
 import App from '../App';
 import { renderWithRouterAndRedux } from './helpers/RenderWith';
+import { mealsMock } from './mocks/Meals';
+import { drinksMock } from './mocks/Drinks';
 
 describe('testing Header component', () => {
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
   test('testing Header with /meals', async () => {
+    global.fetch = vi.fn().mockResolvedValue({
+      json: async () => (mealsMock),
+    });
     renderWithRouterAndRedux(<App />, { initialEntries: ['/meals'] });
 
     const mealsTitle = screen.getByRole('heading', { name: /meals/i });
@@ -32,6 +41,9 @@ describe('testing Header component', () => {
     expect(profileTitle).toBeInTheDocument();
   });
   test('testing Header with /drinks', async () => {
+    global.fetch = vi.fn().mockResolvedValue({
+      json: async () => (drinksMock),
+    });
     renderWithRouterAndRedux(<App />, { initialEntries: ['/drinks'] });
 
     const drinksTitle = screen.getByRole('heading', { name: /drinks/i });
