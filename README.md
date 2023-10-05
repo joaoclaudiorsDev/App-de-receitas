@@ -4,7 +4,7 @@
  - Redux
  - Requisção de API
  - React Router
-## Aplicativos de receitas com funcionaldiades de:
+## Funcionaldiades:
 - Perifl;
 - Favoritar receitas;
 - Videos explicativos de Receitas
