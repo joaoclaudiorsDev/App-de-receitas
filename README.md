@@ -1,11 +1,11 @@
 # Tecnologias envolvidas:
- - React
- - Typescript
- - Redux
- - Requisção de API
- - React Router
+ - React;
+ - Typescript;
+ - Redux;
+ - Requisção de API;
+ - React Router.
 ## Funcionaldiades:
 - Perifl;
 - Favoritar receitas;
-- Videos explicativos de Receitas
+- Videos explicativos de Receitas;
 - "Passo-a-passo" de receitas, com checkbox.
